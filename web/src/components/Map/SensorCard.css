@@ -1,0 +1,90 @@
+.sensor-card {
+    position: absolute;
+    width: 250px;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    transform: translate(-50%, -100%);
+    margin-top: -15px;
+    /* Offset to position above the marker */
+    pointer-events: auto;
+    overflow: hidden;
+}
+
+.sensor-card:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    margin-left: -10px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid white;
+}
+
+.sensor-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.sensor-card-header h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #666;
+    padding: 0 5px;
+}
+
+.close-button:hover {
+    color: #333;
+}
+
+.sensor-card-content {
+    padding: 12px 15px;
+}
+
+.sensor-info-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 12px;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #666;
+}
+
+.info-value {
+    text-align: right;
+}
+
+.status-text {
+    font-weight: 600;
+}
+
+.sensor-card-footer {
+    padding: 8px 15px;
+    border-top: 1px solid #eaeaea;
+    background-color: #f8f8f8;
+    font-size: 11px;
+    color: #666;
+}
+
+.deployment-id {
+    font-style: italic;
+}

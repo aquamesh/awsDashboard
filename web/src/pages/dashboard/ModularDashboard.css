@@ -1,0 +1,158 @@
+/* ModularDashboard.css */
+
+/* Header and controls */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 16px;
+}
+
+.dashboard-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-button,
+.add-tile-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Dashboard layout */
+.layout {
+    transition: background-color 0.3s ease;
+}
+
+.edit-mode {
+    background-color: rgba(0, 0, 0, 0.03);
+    border-radius: 10px;
+}
+
+.dashboard-item {
+    position: relative;
+    transition: box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.edit-mode .dashboard-item {
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+/* Drag handle in edit mode */
+.drag-handle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--amplify-colors-brand-primary-80);
+    color: white;
+    border-radius: 4px 0 4px 0;
+    cursor: move;
+}
+
+/* Make sure card fills the grid cell */
+.dashboard-item>.amplify-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Style mini statistic cards for 1x1 grid */
+.dashboard-item>.amplify-card .card-statistics-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    border-radius: 8px;
+}
+
+.dashboard-item>.amplify-card .card-statistics-amount {
+    font-size: 24px;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+.dashboard-item>.amplify-card .card-title {
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+/* Chart container to adapt to resizing */
+.chart-wrap {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-wrap>div {
+    flex: 1;
+}
+
+/* Prevent item overlap in free-form positioning */
+.react-grid-item.react-grid-placeholder {
+    background: rgba(64, 106, 191, 0.2);
+    opacity: 0.5;
+    transition-duration: 100ms;
+    z-index: 2;
+    border-radius: 15px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+/* Disable transitions for initial load */
+.react-grid-item.cssTransforms {
+    transition-property: transform;
+}
+
+/* Only enable animations during editing */
+.edit-mode .react-grid-item.cssTransforms {
+    transition-duration: 300ms;
+}
+
+/* Disable transition on first render */
+.layout:not(.initialized) .react-grid-item {
+    transition: none !important;
+}
+
+/* Resize handle styling */
+.react-resizable-handle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    bottom: 0;
+    right: 0;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6"><path d="M6 6H0V4.2H4.2V0H6z" fill="rgba(0,0,0,.3)"/></svg>');
+    background-position: bottom right;
+    padding: 0 3px 3px 0;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    box-sizing: border-box;
+    cursor: se-resize;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .dashboard-controls {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
