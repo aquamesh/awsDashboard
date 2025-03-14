@@ -26,15 +26,26 @@
     transition: background-color 0.3s ease;
 }
 
+
 .edit-mode {
     background-color: rgba(0, 0, 0, 0.03);
     border-radius: 10px;
 }
 
+.react-grid-item.react-draggable-dragging {
+    z-index: 10;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transition-duration: 0ms !important;
+}
+
+.react-grid-item.react-resizable-resizing {
+    z-index: 10;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
 .dashboard-item {
     position: relative;
-    transition: box-shadow 0.3s ease;
-    height: 100%;
+    z-index: 2;
 }
 
 .edit-mode .dashboard-item {
@@ -66,45 +77,93 @@
     overflow: hidden;
 }
 
+/* Card header for title and icon alignment */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
 /* Style mini statistic cards for 1x1 grid */
 .dashboard-item>.amplify-card .card-statistics-icon {
-    width: 32px;
-    height: 32px;
-    font-size: 18px;
-    border-radius: 8px;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    margin-top: 0;
 }
 
 .dashboard-item>.amplify-card .card-statistics-amount {
     font-size: 24px;
     margin-top: 5px;
     margin-bottom: 0;
+    width: 100%;
 }
 
 .dashboard-item>.amplify-card .card-title {
-    font-size: 14px;
-    margin-bottom: 2px;
+    font-size: 18px;
+    margin-bottom: 0;
+    padding-top: 2px;
+    display: inline-flex;
+    align-items: center;
+    line-height: 24px;
 }
 
-/* Chart container to adapt to resizing */
+/* Card content container */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+/* Ensure chart container fills available space */
 .chart-wrap {
     flex: 1;
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    height: calc(100% - 24px);
+    /* Subtract card title height */
+    min-height: 200px;
+}
+
+/* Fix ApexCharts SVG positioning */
+.chart-wrap .apexcharts-canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.chart-wrap .apexcharts-canvas svg {
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .chart-wrap>div {
     flex: 1;
 }
 
-/* Prevent item overlap in free-form positioning */
+/* Make sure small charts have proper proportions */
+.dashboard-item[style*="height: 130px"] .chart-wrap {
+    min-height: 90px;
+}
+
+/* Improved placeholder styling */
 .react-grid-item.react-grid-placeholder {
-    background: rgba(64, 106, 191, 0.2);
-    opacity: 0.5;
+    background: rgba(64, 106, 191, 0.3);
+    border: 2px dashed rgba(64, 106, 191, 0.6);
+    opacity: 0.8;
     transition-duration: 100ms;
     z-index: 2;
-    border-radius: 15px;
+    border-radius: 8px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -112,14 +171,31 @@
     user-select: none;
 }
 
+/* Add subtle hover state to items in edit mode */
+.edit-mode .dashboard-item:hover {
+    box-shadow: 0 0 0 2px rgba(64, 106, 191, 0.3);
+}
+
+/* Make the resize handle more visible in edit mode */
+.edit-mode .react-resizable-handle {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><path d="M10 10H0V6H6V0H10z" fill="rgba(64,106,191,.5)"/></svg>');
+    background-position: bottom right;
+    padding: 0 3px 3px 0;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    width: 24px;
+    height: 24px;
+}
+
 /* Disable transitions for initial load */
 .react-grid-item.cssTransforms {
     transition-property: transform;
 }
 
-/* Only enable animations during editing */
+/* Make dragging faster and more responsive */
 .edit-mode .react-grid-item.cssTransforms {
-    transition-duration: 300ms;
+    transition-duration: 150ms;
+    transition-timing-function: ease-out;
 }
 
 /* Disable transition on first render */
@@ -154,5 +230,36 @@
     .dashboard-controls {
         width: 100%;
         justify-content: flex-end;
+    }
+
+    /* Ensure charts fit in mobile view */
+    .chart-wrap {
+        min-height: 180px;
+    }
+}
+
+/* Ensure legends don't overflow */
+.apexcharts-legend {
+    overflow: hidden !important;
+    max-width: 100% !important;
+}
+
+/* Animations for charts when they appear */
+.dashboard-item:not(.react-draggable-dragging) .chart-wrap {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Fade in effect when chart data loads */
+.dashboard-item .chart-wrap>div {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
     }
 }
