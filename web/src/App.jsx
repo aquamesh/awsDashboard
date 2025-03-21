@@ -1,20 +1,21 @@
-import "@aws-amplify/ui-react/styles.css";
-import { withAuthenticator } from "@aws-amplify/ui-react";
-import { Amplify } from "aws-amplify";
-
-// import MapPage from "./components/Map/MapPage";
-import awsExports from "../amplify_outputs.json";
-
 import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
+import { ThemeProvider, withAuthenticator } from "@aws-amplify/ui-react";
+import { Amplify } from "aws-amplify";
+
 import "@aws-amplify/ui-react/styles.css";
 import "./App.css";
-import { ThemeProvider } from "@aws-amplify/ui-react";
+
+import awsExports from "../amplify_outputs.json";
 import theme from "./theme";
 
 import Layout from "./components/Layout";
 import Dashboard from "./pages/dashboard";
 import Deployments from "./pages/deployments";
+import Profile from "./pages/profile"; // Profile = Account/Settings
+
+// Configure Amplify
+Amplify.configure(awsExports);
 
 
 
@@ -36,10 +37,6 @@ const App = () => {
             <Route path="organization" element={<Organization />} />
             <Route path="map" element={<Map />} />
             */}
-
-            {/* Using path="*"" means "match anything", so this route
-                acts like a catch-all for URLs that we don't have explicit
-                routes for. */}
             <Route path="*" element={<NoMatch />} />
           </Route>
         </Routes>
