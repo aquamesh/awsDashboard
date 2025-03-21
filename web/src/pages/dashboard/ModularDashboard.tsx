@@ -1,4 +1,3 @@
-// ModularDashboard.tsx (modified version)
 import React, { useEffect, useState } from "react";
 import {
     View,
@@ -9,13 +8,13 @@ import {
     Button,
     Icon,
 } from "@aws-amplify/ui-react";
-import { MdEdit, MdDragIndicator, MdAdd } from "react-icons/md";
+import { MdEdit, MdDragIndicator, MdAdd, MdClose } from "react-icons/md";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 
 // Import dashboard data and tile components
-import { dashboardTiles, initialLayout, fetchTileData, DashboardTile } from "./dashboardData";
+import { dashboardTiles, DashboardTile, TileType, initialLayout, fetchTileData } from "./dashboardData";
 import { TileRenderer } from "./TileComponents";
 
 import "./Dashboard.css";
@@ -32,6 +31,50 @@ const ModularDashboard = () => {
     const [layout, setLayout] = useState(initialLayout);
     const [initialized, setInitialized] = useState(false);
 
+    // Define the initial layout structure here since we're not importing it
+    const defaultLayout = {
+        lg: [
+            { i: "pageviews", x: 0, y: 0, w: 1, h: 1 },
+            { i: "visits", x: 1, y: 0, w: 1, h: 1 },
+            { i: "uniquevisitors", x: 2, y: 0, w: 1, h: 1 },
+            { i: "map", x: 0, y: 1, w: 6, h: 2.5 },
+            { i: "trafficsummary", x: 0, y: 3.5, w: 4, h: 3 },
+            { i: "trafficsources", x: 4, y: 3.5, w: 2, h: 3 },
+            { i: "salessummary", x: 0, y: 6.5, w: 4, h: 3 },
+            { i: "customers", x: 4, y: 6.5, w: 2, h: 3 }
+        ],
+        md: [
+            { i: "pageviews", x: 0, y: 0, w: 1, h: 1 },
+            { i: "visits", x: 1, y: 0, w: 1, h: 1 },
+            { i: "uniquevisitors", x: 2, y: 0, w: 1, h: 1 },
+            { i: "map", x: 0, y: 1, w: 6, h: 2.5 },
+            { i: "trafficsummary", x: 0, y: 3.5, w: 4, h: 3 },
+            { i: "trafficsources", x: 4, y: 3.5, w: 2, h: 3 },
+            { i: "salessummary", x: 0, y: 6.5, w: 4, h: 3 },
+            { i: "customers", x: 4, y: 6.5, w: 2, h: 3 }
+        ],
+        sm: [
+            { i: "pageviews", x: 0, y: 0, w: 1, h: 1 },
+            { i: "visits", x: 1, y: 0, w: 1, h: 1 },
+            { i: "uniquevisitors", x: 2, y: 0, w: 1, h: 1 },
+            { i: "map", x: 0, y: 1, w: 4, h: 2.5 },
+            { i: "trafficsummary", x: 0, y: 3.5, w: 4, h: 3 },
+            { i: "trafficsources", x: 0, y: 6.5, w: 4, h: 3 },
+            { i: "salessummary", x: 0, y: 9.5, w: 4, h: 3 },
+            { i: "customers", x: 0, y: 12.5, w: 4, h: 3 }
+        ],
+        xs: [
+            { i: "pageviews", x: 0, y: 0, w: 1, h: 1 },
+            { i: "visits", x: 1, y: 0, w: 1, h: 1 },
+            { i: "uniquevisitors", x: 0, y: 1, w: 2, h: 1 },
+            { i: "map", x: 0, y: 2, w: 2, h: 2.5 },
+            { i: "trafficsummary", x: 0, y: 4.5, w: 2, h: 3 },
+            { i: "trafficsources", x: 0, y: 7.5, w: 2, h: 3 },
+            { i: "salessummary", x: 0, y: 10.5, w: 2, h: 3 },
+            { i: "customers", x: 0, y: 13.5, w: 2, h: 3 }
+        ]
+    };
+
     // Load tiles and layout
     useEffect(() => {
         const loadDashboard = async () => {
@@ -46,6 +89,9 @@ const ModularDashboard = () => {
                 } catch (e) {
                     console.error('Error parsing saved layout:', e);
                 }
+            } else {
+                // Use default layout if no saved layout
+                setLayout(defaultLayout);
             }
 
             // Load tiles
@@ -148,14 +194,7 @@ const ModularDashboard = () => {
             <div className="page-header">
                 <Heading level={2}>Dashboard</Heading>
                 <div className="dashboard-controls">
-                    <Button
-                        variation="primary"
-                        onClick={toggleEditMode}
-                        className="edit-button"
-                    >
-                        <Icon as={MdEdit} />
-                        {editMode ? "Exit Edit Mode" : "Edit Layout"}
-                    </Button>
+                    {/* Remove the edit button from here */}
                     {editMode && (
                         <Button variation="primary" className="add-tile-button">
                             <Icon as={MdAdd} />
@@ -188,22 +227,69 @@ const ModularDashboard = () => {
                             onLayoutChange={handleLayoutChange}
                             containerPadding={[16, 16]}
                             margin={[16, 16]}
-                            // Add these properties to control transition behavior:
-                            draggableCancel=".react-resizable-handle" // Prevent drag from resize handle
+                            draggableCancel=".react-resizable-handle"
                             transformScale={1}
-                            // If you want slower resize operations:
-                            // resizeHandle={<div className="custom-resize-handle" />}
                         >
-                            {tiles.map((tile) => (
-                                <div key={tile.id} className="dashboard-item">
-                                    {renderDragHandle()}
-                                    <TileRenderer tile={tile} />
-                                </div>
-                            ))}
+                            {tiles.map((tile) => {
+                                                                            // Find the layout item for this tile in current layout
+                                // Use a constant breakpoint object instead of calculating on render
+                                // This prevents reference issues with window in SSR/React contexts
+                                const breakpoint = layout ? 
+                                    (Object.keys(layout).find(key => 
+                                        layout[key] && Array.isArray(layout[key]) && layout[key].length > 0) || 'lg')
+                                    : 'lg';
+
+                                // Find this tile in the current layout or use default values
+                                const currentLayout = layout && layout[breakpoint] ? 
+                                    layout[breakpoint].find(item => item.i === tile.id) : null;
+                                
+                                // If layout is found, use it; otherwise, use values from defaultLayout
+                                const defaultLayoutItem = defaultLayout[breakpoint].find(item => item.i === tile.id);
+                                
+                                return (
+                                    <div 
+                                        key={tile.id} 
+                                        className="dashboard-item"
+                                        data-grid={{
+                                            x: currentLayout?.x ?? defaultLayoutItem?.x ?? 0,
+                                            y: currentLayout?.y ?? defaultLayoutItem?.y ?? 0,
+                                            w: currentLayout?.w ?? defaultLayoutItem?.w ?? 1,
+                                            h: currentLayout?.h ?? defaultLayoutItem?.h ?? 1,
+                                            minW: tile.minW || 1,
+                                            minH: tile.minH || 1,
+                                            maxW: tile.type === TileType.VALUE ? 1 : undefined,
+                                            maxH: tile.type === TileType.VALUE ? 1 : undefined,
+                                        }}
+                                    >
+                                        {renderDragHandle()}
+                                        <TileRenderer tile={tile} />
+                                    </div>
+                                );
+                            })}
                         </ResponsiveGridLayout>
                     </div>
                 )}
             </View>
+
+            {/* Add the floating edit button */}
+            <Button
+                variation="primary"
+                onClick={toggleEditMode}
+                className={`floating-edit-button ${editMode ? 'in-edit-mode' : ''}`}
+                ariaLabel={editMode ? "Done" : "Edit Layout"}
+            >
+                {editMode ? (
+                    <>
+                        <Icon as={MdClose} className="close-icon" />
+                        <span className="button-text">Done</span>
+                    </>
+                ) : (
+                    <>
+                        <Icon as={MdEdit} className="edit-icon" />
+                        <span className="button-text">Edit</span>
+                    </>
+                )}
+            </Button>
         </>
     );
 };

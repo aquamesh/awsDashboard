@@ -28,9 +28,15 @@
 
 
 .edit-mode {
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: rgba(0, 0, 0, 0.05);
     border-radius: 10px;
 }
+
+/* Make the grid overlay bolder */
+.grid-overlay div {
+    /* Make the border more prominent */
+    border: 1px dashed rgba(0, 0, 0, 0.25) !important; /* Darker color and !important to override inline styles */
+  }
 
 .react-grid-item.react-draggable-dragging {
     z-index: 10;
@@ -261,5 +267,116 @@
 
     to {
         opacity: 1;
+    }
+}
+
+/* Icon-only floating button with consistent icon positioning */
+.floating-edit-button {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1000;
+    border-radius: 50%;
+    /* Circular shape for icon-only state */
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    /* Keeps the text hidden when not expanded */
+    border: none;
+    /* Ensure no border by default */
+}
+
+/* Fix the focus outline when clicked */
+.floating-edit-button:focus {
+    outline: none !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    /* Maintain only the elevation shadow */
+}
+
+/* Disable the AWS Amplify UI's default focus styles */
+.floating-edit-button.amplify-button:focus {
+    outline: none !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Force override for Amplify UI's focus visible styles */
+.floating-edit-button.amplify-button:focus-visible {
+    outline: none !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Fixed icon positioning for both states */
+.floating-edit-button svg {
+    font-size: 24px;
+    transition: margin 0.3s ease;
+    flex-shrink: 0;
+    width: 24px;
+    /* Fixed width */
+    height: 24px;
+    /* Fixed height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Apply consistent positioning for both icons */
+.floating-edit-button svg.edit-icon,
+.floating-edit-button svg.close-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hide text by default */
+.floating-edit-button .button-text {
+    font-weight: 500;
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    margin-left: 0;
+}
+
+/* Expand on hover to show text */
+.floating-edit-button:hover {
+    width: 110px;
+    border-radius: 28px;
+    padding-right: 16px;
+}
+
+.floating-edit-button:hover svg {
+    margin-right: 8px;
+}
+
+.floating-edit-button:hover .button-text {
+    opacity: 1;
+    width: auto;
+    margin-left: 4px;
+}
+
+/* When in edit mode, change button appearance */
+.floating-edit-button.in-edit-mode {
+    background-color: #f5f5f5;
+    color: var(--amplify-colors-brand-primary-80);
+}
+
+/* For smaller screens */
+@media (max-width: 768px) {
+    .floating-edit-button {
+        width: 48px;
+        height: 48px;
+    }
+
+    .floating-edit-button:hover {
+        width: 100px;
     }
 }
