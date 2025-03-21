@@ -15,15 +15,15 @@
     "@aws-sdk/protocol-http": "^3.370.0",
     "@aws-sdk/signature-v4": "^3.370.0",
     "apexcharts": "^4.5.0",
-    "aws-amplify": "^6.10.3",
+    "aws-amplify": "^6.13.6",
     "maplibre-gl": "^2.1.2",
     "maplibre-gl-js-amplify": "^4.0.0",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18.2.0",
+    "react-grid-layout": "^1.3.4",
     "react-icons": "^4.10.1",
     "react-router-dom": "^6.15.0",
-    "react-grid-layout": "^1.3.4",
     "react-scripts": "5.0.1"
   },
   "devDependencies": {
