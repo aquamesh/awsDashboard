@@ -6,7 +6,7 @@ import {
   MdMap,
   MdOutlineRocketLaunch,
   MdSensors,
-  MdBusiness,
+  MdBusiness
 } from "react-icons/md";
 
 // Store the base URL as a string
@@ -20,16 +20,7 @@ export const baseConfig = {
   header: true,
   headerText: "AquaView",
   footer: true,
-  footerText: (
-    <>
-      <span>
-        © MIT {new Date().getFullYear()}, Made with ❤️ by {""}
-        <a href="https://github.com/mrtzdev" target="_blank" rel="noreferrer">
-          Mrtzdev
-        </a>
-      </span>
-    </>
-  ),
+  // The detailed footer implementation has been moved to the Footer component
 
   logo: (
     <>
