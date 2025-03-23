@@ -8,7 +8,7 @@ const HeaderNav = () => {
   const navigate = useNavigate();
   return (
     <>
-      {baseConfig.projectLink ? (
+      {/* {baseConfig.projectLink ? (
         <div className="github-link">
           <Link
             href={baseConfig.projectLink}
@@ -20,7 +20,7 @@ const HeaderNav = () => {
         </div>
       ) : (
         <></>
-      )}
+      )} */}
 
       <Menu
         menuAlign="end"

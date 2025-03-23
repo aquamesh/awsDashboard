@@ -1,4 +1,4 @@
-// import Dashboard from "./Dashboard";
+// index.tsx for dashboard page
 
 // export default Dashboard;
 import ModularDashboard from "./ModularDashboard";

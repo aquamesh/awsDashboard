@@ -13,12 +13,10 @@ import Layout from "./components/Layout";
 import Dashboard from "./pages/dashboard";
 import Deployments from "./pages/deployments";
 import Profile from "./pages/profile"; // Profile = Account/Settings
+import Sensors from "./pages/sensors"; // Sensors = Devices
+import SensorView from "./pages/sensors/SensorView"; // Import the SensorView component
 
 // Configure Amplify
-Amplify.configure(awsExports);
-
-
-
 Amplify.configure(awsExports);
 
 const App = () => {
@@ -33,8 +31,9 @@ const App = () => {
             <Route index element={<Dashboard />} />
             <Route path="deployments" element={<Deployments />} />
             <Route path="account" element={<Profile />} />
-            {/*
             <Route path="sensors" element={<Sensors />} />
+            <Route path="sensors/:sensorId" element={<SensorView />} />
+            {/*
             <Route path="organization" element={<Organization />} />
             <Route path="map" element={<Map />} />
             */}

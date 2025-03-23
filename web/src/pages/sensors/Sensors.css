@@ -1,0 +1,37 @@
+/* Styles for the Sensors page */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.create-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-title {
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+
+.sensor-link {
+    color: var(--amplify-colors-brand-primary-80);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.sensor-link:hover {
+    text-decoration: underline;
+}
+
+/* Make sure the table responds well to different screen sizes */
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+}

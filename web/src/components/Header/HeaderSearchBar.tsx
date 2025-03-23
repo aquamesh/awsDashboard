@@ -10,11 +10,11 @@ const HeaderSearchBar = () => {
       <Autocomplete
         label="Autocomplete"
         options={[
-          { id: "traffic", label: "Traffic" },
-          { id: "sales", label: "Sales" },
-          { id: "users", label: "Users" },
-          { id: "tables", label: "Tables" },
-          { id: "forms", label: "Forms" },
+          { id: "dashboard", label: "Dashboard" },
+          { id: "deployments", label: "Deployments" },
+          { id: "sensors", label: "Sensors" },
+          { id: "map", label: "Map" },
+          { id: "organization", label: "Organization" },
         ]}
         placeholder="Search here..."
         size="small"
