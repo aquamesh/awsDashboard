@@ -1,0 +1,232 @@
+/* components/ModularEditableGrid/ModularEditableGrid.css -  */
+
+/* Grid controls */
+.grid-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+    padding: 0 16px;
+}
+
+.add-tile-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Grid layout */
+.layout {
+    transition: background-color 0.3s ease;
+}
+
+.edit-mode {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+.react-grid-item.react-draggable-dragging {
+    z-index: 10;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transition-duration: 0ms !important;
+}
+
+.react-grid-item.react-resizable-resizing {
+    z-index: 10;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.grid-item {
+    position: relative;
+    z-index: 2;
+}
+
+.edit-mode .grid-item {
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+/* Drag handle in edit mode */
+.drag-handle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--amplify-colors-brand-primary-80);
+    color: white;
+    border-radius: 4px 0 4px 0;
+    cursor: move;
+}
+
+/* Improved placeholder styling */
+.react-grid-item.react-grid-placeholder {
+    background: rgba(64, 106, 191, 0.3);
+    border: 2px dashed rgba(64, 106, 191, 0.6);
+    opacity: 0.8;
+    transition-duration: 100ms;
+    z-index: 2;
+    border-radius: 8px;
+    user-select: none;
+}
+
+/* Add subtle hover state to items in edit mode */
+.edit-mode .grid-item:hover {
+    box-shadow: 0 0 0 2px rgba(64, 106, 191, 0.3);
+}
+
+/* Make the resize handle more visible in edit mode */
+.edit-mode .react-resizable-handle {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><path d="M10 10H0V6H6V0H10z" fill="rgba(64,106,191,.5)"/></svg>');
+    background-position: bottom right;
+    padding: 0 3px 3px 0;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    width: 24px;
+    height: 24px;
+}
+
+/* Resize handle styling */
+.react-resizable-handle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    bottom: 0;
+    right: 0;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6"><path d="M6 6H0V4.2H4.2V0H6z" fill="rgba(0,0,0,.3)"/></svg>');
+    background-position: bottom right;
+    padding: 0 3px 3px 0;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    box-sizing: border-box;
+    cursor: se-resize;
+}
+
+/* Floating button container */
+.floating-button-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 16px;
+    align-items: center;
+}
+
+/* Base floating button styles */
+.floating-edit-button,
+.floating-reset-button {
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    border: none;
+}
+
+/* Override fixed positioning for buttons inside container */
+.floating-button-container .floating-edit-button,
+.floating-button-container .floating-reset-button {
+    position: relative;
+    bottom: auto;
+    right: auto;
+}
+
+/* Fix focus styling */
+.floating-edit-button:focus,
+.floating-reset-button:focus,
+.floating-edit-button.amplify-button:focus,
+.floating-reset-button.amplify-button:focus,
+.floating-edit-button.amplify-button:focus-visible,
+.floating-reset-button.amplify-button:focus-visible {
+    outline: none !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Icon styling */
+.floating-edit-button svg,
+.floating-reset-button svg {
+    font-size: 24px;
+    transition: margin 0.3s ease;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Button text styling */
+.floating-edit-button .button-text,
+.floating-reset-button .button-text {
+    font-weight: 500;
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    margin-left: 0;
+}
+
+/* Hover effects */
+.floating-edit-button:hover,
+.floating-reset-button:hover {
+    width: 110px;
+    border-radius: 28px;
+    padding-right: 16px;
+}
+
+.floating-edit-button:hover svg,
+.floating-reset-button:hover svg {
+    margin-right: 8px;
+}
+
+.floating-edit-button:hover .button-text,
+.floating-reset-button:hover .button-text {
+    opacity: 1;
+    width: auto;
+    margin-left: 4px;
+}
+
+/* Edit mode styles */
+.floating-edit-button.in-edit-mode,
+.floating-reset-button {
+    background-color: #f5f5f5;
+    color: var(--amplify-colors-brand-primary-80);
+}
+
+/* Fade in animation for elements */
+.grid-item {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .floating-edit-button, 
+    .floating-reset-button {
+        width: 48px;
+        height: 48px;
+    }
+
+    .floating-edit-button:hover, 
+    .floating-reset-button:hover {
+        width: 100px;
+    }
+    
+    .floating-button-container {
+        gap: 12px;
+    }
+}

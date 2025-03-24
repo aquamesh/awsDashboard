@@ -1,10 +1,10 @@
-// Tile Components for the dashboard
+// pages/dashboard/TileComponents.tsx - Tile components
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card } from "@aws-amplify/ui-react";
 import Chart from "react-apexcharts";
 import { ApexOptions } from 'apexcharts';
-import { MdRemoveRedEye, MdWeb, MdPermIdentity } from "react-icons/md";
+import * as MdIcons from "react-icons/md";
 import Map from "../../components/Map/Map";
 import { DashboardTile, TileType, ChartType } from "./dashboardData";
 
@@ -15,30 +15,62 @@ interface ValueTileProps {
   data: DashboardTile;
 }
 
+// ----------------------------------------
+// Value Tile Component
+// ----------------------------------------
+interface ValueTileProps {
+  data: DashboardTile;
+}
+
 export const ValueTile: React.FC<ValueTileProps> = ({ data }) => {
-  // Map string icon names to components
-  const getIcon = (iconName: string | undefined) => {
-    if (!iconName) return null;
+  // Use dynamic icon from react-icons/md based on the iconConfig
+  const renderIcon = () => {
+    if (!data.iconConfig?.name) return null;
     
-    const iconMap = {
-      MdRemoveRedEye: <MdRemoveRedEye />,
-      MdWeb: <MdWeb />,
-      MdPermIdentity: <MdPermIdentity />,
-    };
-    
-    return iconMap[iconName] || null;
+    try {
+      // Get the icon component dynamically
+      const IconComponent = MdIcons[data.iconConfig.name as keyof typeof MdIcons];
+      
+      if (!IconComponent) {
+        console.warn(`Icon ${data.iconConfig.name} not found in react-icons/md`);
+        return null;
+      }
+      
+      return (
+        <IconComponent 
+          size={24} 
+          color={data.iconConfig.color || "black"} 
+        />
+      );
+    } catch (error) {
+      console.error(`Error rendering icon ${data.iconConfig.name}:`, error);
+      return null;
+    }
   };
+
+  // Determine which title to display (abbreviation if available, otherwise full title)
+  const displayTitle = data.abbreviation || data.title;
 
   return (
     <Card height="100%" borderRadius="15px">
-      <div className="card-content">
+      <div className="card-content value-tile-content">
         <div className="card-header">
-          <div className="card-title">{data.title}</div>
-          <div className="card-statistics-icon" style={{ color: "black" }}>
-            {getIcon(data.icon)}
+          <div 
+            className="card-title" 
+            title={data.title} // Add tooltip with full title
+          >
+            {displayTitle}
+          </div>
+          <div className="card-statistics-icon">
+            {renderIcon()}
           </div>
         </div>
-        <div className="card-statistics-amount">{data.value}</div>
+        <div className="value-container">
+          <div className="card-statistics-amount">
+            {data.value}
+            {data.unit && <span className="unit-label">{data.unit}</span>}
+          </div>
+        </div>
       </div>
     </Card>
   );
@@ -77,7 +109,7 @@ export const ChartTile: React.FC<ChartTileProps> = ({ data }) => {
               offsetY: 0,
             },
           },
-          colors: ["#5f71e4", "#2dce88", "#fa6340", "#f5365d", "#13cdef"],
+          colors: ["#3498db", "#2ecc71", "#f39c12", "#9b59b6", "#1abc9c"],
           legend: { 
             position: "bottom" as const,
             offsetY: 0 
@@ -99,7 +131,7 @@ export const ChartTile: React.FC<ChartTileProps> = ({ data }) => {
             padding: { top: -20, right: 0, left: -4, bottom: -4 },
             strokeDashArray: 4,
           },
-          colors: ["#406abf", "#40aabf", "#81e391"],
+          colors: ["#3498db", "#2ecc71", "#1abc9c"],
           legend: { show: false },
         };
       
@@ -107,7 +139,7 @@ export const ChartTile: React.FC<ChartTileProps> = ({ data }) => {
       default:
         return {
           ...baseOptions,
-          colors: ["#5f71e4", "#2dce88"],
+          colors: ["#3498db", "#2ecc71"],
           legend: { show: false },
           stroke: { curve: "smooth" },
           grid: { row: { colors: ["transparent", "transparent"], opacity: 0.2 } },
@@ -115,9 +147,17 @@ export const ChartTile: React.FC<ChartTileProps> = ({ data }) => {
     }
   };
 
+  // Determine which title to display (abbreviation if available, otherwise full title)
+  const displayTitle = data.abbreviation || data.title;
+
   return (
     <Card height="100%" borderRadius="15px">
-      <div className="card-title">{data.title}</div>
+      <div 
+        className="card-title"
+        title={data.title} // Add tooltip with full title
+      >
+        {displayTitle}
+      </div>
       <div className="chart-wrap">
         <Chart
           series={data.chartData}
@@ -138,9 +178,17 @@ interface MapTileProps {
 }
 
 export const MapTile: React.FC<MapTileProps> = ({ data }) => {
+  // Determine which title to display (abbreviation if available, otherwise full title)
+  const displayTitle = data.abbreviation || data.title;
+
   return (
     <Card height="100%" borderRadius="15px">
-      <div className="card-title">{data.title}</div>
+      <div 
+        className="card-title"
+        title={data.title} // Add tooltip with full title
+      >
+        {displayTitle}
+      </div>
       <div className="map-wrap" style={{ height: "calc(100% - 30px)" }}>
         <Map />
       </div>

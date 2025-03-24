@@ -1,6 +1,11 @@
-/* ModularDashboard.css */
+/* pages/dashboard/ModularDashboard.css - Css for Modular Grid */
 
-/* Header and controls */
+/* Dashboard container */
+.dashboard-container {
+    padding: 0 16px;
+}
+
+/* Header styling */
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -9,74 +14,8 @@
     padding: 0 16px;
 }
 
-.dashboard-controls {
-    display: flex;
-    gap: 10px;
-}
-
-.edit-button,
-.add-tile-button {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-/* Dashboard layout */
-.layout {
-    transition: background-color 0.3s ease;
-}
-
-
-.edit-mode {
-    background-color: rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
-}
-
-/* Make the grid overlay bolder */
-.grid-overlay div {
-    /* Make the border more prominent */
-    border: 1px dashed rgba(0, 0, 0, 0.25) !important; /* Darker color and !important to override inline styles */
-  }
-
-.react-grid-item.react-draggable-dragging {
-    z-index: 10;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    transition-duration: 0ms !important;
-}
-
-.react-grid-item.react-resizable-resizing {
-    z-index: 10;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-.dashboard-item {
-    position: relative;
-    z-index: 2;
-}
-
-.edit-mode .dashboard-item {
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
-}
-
-/* Drag handle in edit mode */
-.drag-handle {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--amplify-colors-brand-primary-80);
-    color: white;
-    border-radius: 4px 0 4px 0;
-    cursor: move;
-}
-
-/* Make sure card fills the grid cell */
-.dashboard-item>.amplify-card {
+/* Custom styling for cards inside the dashboard */
+.dashboard-grid .grid-item > .amplify-card {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -92,33 +31,19 @@
     margin-bottom: 5px;
 }
 
-/* Style mini statistic cards for 1x1 grid */
-.dashboard-item>.amplify-card .card-statistics-icon {
-    width: 24px;
-    height: 24px;
-    font-size: 14px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: black;
-    margin-top: 0;
-}
-
-.dashboard-item>.amplify-card .card-statistics-amount {
-    font-size: 24px;
-    margin-top: 5px;
-    margin-bottom: 0;
-    width: 100%;
-}
-
-.dashboard-item>.amplify-card .card-title {
-    font-size: 18px;
-    margin-bottom: 0;
+/* Card title */
+.card-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
     padding-top: 2px;
     display: inline-flex;
     align-items: center;
-    line-height: 24px;
+    line-height: 20px;
+    max-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* Card content container */
@@ -127,9 +52,62 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
+    position: relative;
 }
 
-/* Ensure chart container fills available space */
+/* Value tile specific layout */
+.value-tile-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Fixed height header for consistent spacing */
+.value-tile-content .card-header {
+    height: 32px;
+}
+
+/* Container for value display to ensure consistent positioning */
+.value-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 8px;
+}
+
+/* Statistics icon */
+.card-statistics-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    margin-top: 0;
+}
+
+/* Statistics amount for value tiles */
+.card-statistics-amount {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    text-align: center;
+}
+
+/* Unit label styling */
+.unit-label {
+    font-size: 14px;
+    font-weight: normal;
+    color: #666;
+    margin-left: 4px;
+}
+
+/* Chart container */
 .chart-wrap {
     flex: 1;
     position: relative;
@@ -138,8 +116,15 @@
     flex-direction: column;
     width: 100%;
     height: calc(100% - 24px);
-    /* Subtract card title height */
     min-height: 200px;
+}
+
+/* Map container */
+.map-wrap {
+    position: relative;
+    height: calc(100% - 30px);
+    width: 100%;
+    overflow: hidden;
 }
 
 /* Fix ApexCharts SVG positioning */
@@ -153,76 +138,8 @@
     height: 100% !important;
 }
 
-.chart-wrap>div {
+.chart-wrap > div {
     flex: 1;
-}
-
-/* Make sure small charts have proper proportions */
-.dashboard-item[style*="height: 130px"] .chart-wrap {
-    min-height: 90px;
-}
-
-/* Improved placeholder styling */
-.react-grid-item.react-grid-placeholder {
-    background: rgba(64, 106, 191, 0.3);
-    border: 2px dashed rgba(64, 106, 191, 0.6);
-    opacity: 0.8;
-    transition-duration: 100ms;
-    z-index: 2;
-    border-radius: 8px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-}
-
-/* Add subtle hover state to items in edit mode */
-.edit-mode .dashboard-item:hover {
-    box-shadow: 0 0 0 2px rgba(64, 106, 191, 0.3);
-}
-
-/* Make the resize handle more visible in edit mode */
-.edit-mode .react-resizable-handle {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><path d="M10 10H0V6H6V0H10z" fill="rgba(64,106,191,.5)"/></svg>');
-    background-position: bottom right;
-    padding: 0 3px 3px 0;
-    background-repeat: no-repeat;
-    background-origin: content-box;
-    width: 24px;
-    height: 24px;
-}
-
-/* Disable transitions for initial load */
-.react-grid-item.cssTransforms {
-    transition-property: transform;
-}
-
-/* Make dragging faster and more responsive */
-.edit-mode .react-grid-item.cssTransforms {
-    transition-duration: 150ms;
-    transition-timing-function: ease-out;
-}
-
-/* Disable transition on first render */
-.layout:not(.initialized) .react-grid-item {
-    transition: none !important;
-}
-
-/* Resize handle styling */
-.react-resizable-handle {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    bottom: 0;
-    right: 0;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6"><path d="M6 6H0V4.2H4.2V0H6z" fill="rgba(0,0,0,.3)"/></svg>');
-    background-position: bottom right;
-    padding: 0 3px 3px 0;
-    background-repeat: no-repeat;
-    background-origin: content-box;
-    box-sizing: border-box;
-    cursor: se-resize;
 }
 
 /* Responsive adjustments */
@@ -233,150 +150,7 @@
         gap: 10px;
     }
 
-    .dashboard-controls {
-        width: 100%;
-        justify-content: flex-end;
-    }
-
-    /* Ensure charts fit in mobile view */
     .chart-wrap {
         min-height: 180px;
-    }
-}
-
-/* Ensure legends don't overflow */
-.apexcharts-legend {
-    overflow: hidden !important;
-    max-width: 100% !important;
-}
-
-/* Animations for charts when they appear */
-.dashboard-item:not(.react-draggable-dragging) .chart-wrap {
-    transition: opacity 0.3s ease-in-out;
-}
-
-/* Fade in effect when chart data loads */
-.dashboard-item .chart-wrap>div {
-    animation: fadeIn 0.4s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-/* Icon-only floating button with consistent icon positioning */
-.floating-edit-button {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    z-index: 1000;
-    border-radius: 50%;
-    /* Circular shape for icon-only state */
-    width: 56px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease;
-    overflow: hidden;
-    /* Keeps the text hidden when not expanded */
-    border: none;
-    /* Ensure no border by default */
-}
-
-/* Fix the focus outline when clicked */
-.floating-edit-button:focus {
-    outline: none !important;
-    border: none !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-    /* Maintain only the elevation shadow */
-}
-
-/* Disable the AWS Amplify UI's default focus styles */
-.floating-edit-button.amplify-button:focus {
-    outline: none !important;
-    border: none !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-}
-
-/* Force override for Amplify UI's focus visible styles */
-.floating-edit-button.amplify-button:focus-visible {
-    outline: none !important;
-    border: none !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-}
-
-/* Fixed icon positioning for both states */
-.floating-edit-button svg {
-    font-size: 24px;
-    transition: margin 0.3s ease;
-    flex-shrink: 0;
-    width: 24px;
-    /* Fixed width */
-    height: 24px;
-    /* Fixed height */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Apply consistent positioning for both icons */
-.floating-edit-button svg.edit-icon,
-.floating-edit-button svg.close-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Hide text by default */
-.floating-edit-button .button-text {
-    font-weight: 500;
-    opacity: 0;
-    width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    transition: all 0.3s ease;
-    margin-left: 0;
-}
-
-/* Expand on hover to show text */
-.floating-edit-button:hover {
-    width: 110px;
-    border-radius: 28px;
-    padding-right: 16px;
-}
-
-.floating-edit-button:hover svg {
-    margin-right: 8px;
-}
-
-.floating-edit-button:hover .button-text {
-    opacity: 1;
-    width: auto;
-    margin-left: 4px;
-}
-
-/* When in edit mode, change button appearance */
-.floating-edit-button.in-edit-mode {
-    background-color: #f5f5f5;
-    color: var(--amplify-colors-brand-primary-80);
-}
-
-/* For smaller screens */
-@media (max-width: 768px) {
-    .floating-edit-button {
-        width: 48px;
-        height: 48px;
-    }
-
-    .floating-edit-button:hover {
-        width: 100px;
     }
 }

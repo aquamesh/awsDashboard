@@ -1,3 +1,5 @@
+// Map.jsx (component)
+
 import { useEffect, useRef } from "react";
 import { createMap } from "maplibre-gl-js-amplify";
 import { Marker } from "maplibre-gl";
