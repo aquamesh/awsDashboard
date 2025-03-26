@@ -29,8 +29,8 @@
     "react-scripts": "5.0.1"
   },
   "devDependencies": {
-    "@aws-amplify/backend": "^1.9.0",
-    "@aws-amplify/backend-cli": "^1.4.3",
+    "@aws-amplify/backend": "^1.15.0",
+    "@aws-amplify/backend-cli": "^1.5.0",
     "@babel/types": "^7.27.0",
     "@types/aws-lambda": "^8.10.148",
     "@types/babel__core": "^7.20.5",
