@@ -1,3 +1,4 @@
+// src/App.jsx - Main application file
 import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import { ThemeProvider, withAuthenticator } from "@aws-amplify/ui-react";

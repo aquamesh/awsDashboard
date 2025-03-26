@@ -1,4 +1,4 @@
-// Profile.tsx
+// src/pages/profile/Profile.tsx
 import React from "react";
 import { View, Flex, useTheme } from "@aws-amplify/ui-react";
 import { useAuthenticator } from "@aws-amplify/ui-react";

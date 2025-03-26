@@ -1,4 +1,4 @@
-// ProfileSettings.tsx
+// src/pages/profile/ProfileSettings.tsx
 import React from "react";
 import { Text, SwitchField } from "@aws-amplify/ui-react";
 

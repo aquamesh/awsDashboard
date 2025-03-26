@@ -1,3 +1,4 @@
+// amplify/functions/list-sensors/handler.ts - This file defines the Lambda function that lists all sensors in the system.
 import type { Handler } from "aws-lambda";
 import { IoTClient, SearchIndexCommand } from "@aws-sdk/client-iot";
 

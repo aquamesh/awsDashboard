@@ -1,3 +1,4 @@
+// src/config.tsx - Configuration file for the AquaView web application
 import React from "react";
 import { Icon } from "@aws-amplify/ui-react";
 

@@ -1,0 +1,159 @@
+.
+├── .eslintignore
+├── .eslintrc.cjs
+├── .gitignore
+├── .graphqlconfig.yml
+├── .vscode
+│   └── settings.json
+├── README.md
+├── amplify
+│   ├── auth
+│   │   ├── post-confirmation
+│   │   │   ├── handler.ts
+│   │   │   └── resource.ts
+│   │   └── resource.ts
+│   ├── backend.ts
+│   ├── data
+│   │   └── resource.ts
+│   ├── functions
+│   │   ├── create-user-on-signup
+│   │   │   ├── handler.ts
+│   │   │   └── resource.ts
+│   │   ├── get-parameter-values-by-sensor
+│   │   │   ├── handler.ts
+│   │   │   └── resource.ts
+│   │   ├── get-spectrogram-readings-by-sensor
+│   │   │   ├── handler.ts
+│   │   │   └── resource.ts
+│   │   ├── query-iotcore-devices
+│   │   │   ├── handler.ts
+│   │   │   └── resource.ts
+│   │   └── utils
+│   │       └── isUserInOrg.ts
+│   ├── package.json
+│   ├── structure.txt
+│   ├── tsconfig.json
+│   └── tsconfig.tsbuildinfo
+├── amplify_outputs.json
+├── dist
+│   ├── assets
+│   │   ├── index-BWvVXfbr.css
+│   │   └── index-CaTuNvDT.js
+│   ├── favicon.ico
+│   ├── index.html
+│   ├── logo.png
+│   ├── logo192.png
+│   ├── logo512.png
+│   ├── manifest.json
+│   └── robots.txt
+├── index.html
+├── jsconfig.json
+├── package-lock.json
+├── package.json
+├── public
+│   ├── favicon.ico
+│   ├── index.html
+│   ├── logo.png
+│   ├── logo192.png
+│   ├── logo512.png
+│   ├── manifest.json
+│   └── robots.txt
+├── src
+│   ├── App.css
+│   ├── App.jsx
+│   ├── amplify
+│   │   └── client.ts
+│   ├── components
+│   │   ├── Charts
+│   │   │   └── BarChart.tsx
+│   │   ├── Footer
+│   │   │   ├── Footer.css
+│   │   │   ├── Footer.tsx
+│   │   │   └── index.tsx
+│   │   ├── Header
+│   │   │   ├── Header.css
+│   │   │   ├── Header.tsx
+│   │   │   ├── HeaderNav.tsx
+│   │   │   ├── HeaderSearchBar.tsx
+│   │   │   └── index.tsx
+│   │   ├── Layout
+│   │   │   ├── Layout.css
+│   │   │   ├── Layout.tsx
+│   │   │   └── index.tsx
+│   │   ├── Logo
+│   │   │   ├── Logo.tsx
+│   │   │   └── index.tsx
+│   │   ├── Map
+│   │   │   ├── Map.css
+│   │   │   ├── Map.jsx
+│   │   │   ├── SensorCard.css
+│   │   │   └── SensorCard.jsx
+│   │   ├── ModularEditableGrid
+│   │   │   ├── ModularEditableGrid.css
+│   │   │   └── ModularEditableGrid.tsx
+│   │   └── SideBar
+│   │       ├── SideBar.css
+│   │       ├── SideBar.tsx
+│   │       ├── SidebarNav.tsx
+│   │       ├── SidebarNavToggle.tsx
+│   │       └── index.tsx
+│   ├── config.tsx
+│   ├── graphql
+│   │   ├── mutations.js
+│   │   ├── queries.js
+│   │   ├── schema.json
+│   │   └── subscriptions.js
+│   ├── index.css
+│   ├── logo.svg
+│   ├── main.jsx
+│   ├── pages
+│   │   ├── dashboard
+│   │   │   ├── ModularDashboard.css
+│   │   │   ├── ModularDashboard.tsx
+│   │   │   ├── TileComponents.tsx
+│   │   │   ├── dashboardData.tsx
+│   │   │   └── index.tsx
+│   │   ├── deployments
+│   │   │   ├── Deployments.css
+│   │   │   ├── Deployments.tsx
+│   │   │   └── index.tsx
+│   │   ├── forms
+│   │   │   ├── BasicForm.tsx
+│   │   │   ├── EditForm
+│   │   │   │   ├── EditForm.tsx
+│   │   │   │   ├── FormActions.tsx
+│   │   │   │   ├── FormFields.tsx
+│   │   │   │   └── index.tsx
+│   │   │   ├── Forms.tsx
+│   │   │   └── index.tsx
+│   │   ├── profile
+│   │   │   ├── Profile.css
+│   │   │   ├── Profile.tsx
+│   │   │   ├── ProfileHeader.tsx
+│   │   │   ├── ProfileInformation.tsx
+│   │   │   ├── ProfileSettings.tsx
+│   │   │   └── index.tsx
+│   │   ├── sensors
+│   │   │   ├── SensorView
+│   │   │   │   └── index.tsx
+│   │   │   ├── SensorView.css
+│   │   │   ├── SensorView.tsx
+│   │   │   ├── Sensors.css
+│   │   │   ├── Sensors.tsx
+│   │   │   └── index.tsx
+│   │   └── tables
+│   │       ├── BasicTable.tsx
+│   │       ├── Tables.tsx
+│   │       ├── UsersTable
+│   │       │   ├── UserTable.css
+│   │       │   ├── UsersTable.tsx
+│   │       │   └── index.tsx
+│   │       ├── UsersTablePage.tsx
+│   │       └── index.tsx
+│   └── theme.tsx
+├── structure.txt
+├── tsconfig.json
+├── vite-env.d.ts
+└── vite.config.js
+
+37 directories, 120 files

@@ -1,3 +1,4 @@
+// src/theme.tsx - Custom theme for AWS Amplify UI
 import { Theme } from "@aws-amplify/ui-react";
 
 const theme: Theme = {

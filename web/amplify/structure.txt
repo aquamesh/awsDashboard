@@ -1,0 +1,24 @@
+.
+├── auth
+│   └── resource.ts
+├── backend.ts
+├── data
+│   └── resource.ts
+├── functions
+│   ├── get-parameter-values-by-sensor
+│   │   ├── handler.ts
+│   │   └── resource.ts
+│   ├── get-spectrogram-readings-by-sensor
+│   │   ├── handler.ts
+│   │   └── resource.ts
+│   ├── list-sensors
+│   │   ├── handler.ts
+│   │   └── resource.ts
+│   └── send-sensor-value
+│       ├── handler.ts
+│       └── resource.ts
+├── package.json
+├── structure.txt
+└── tsconfig.json
+
+8 directories, 14 files

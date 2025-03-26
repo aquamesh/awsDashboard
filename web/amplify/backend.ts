@@ -1,17 +1,22 @@
+// amplify/backend.ts - This file defines the backend resources for the Amplify project.
 import { defineBackend } from "@aws-amplify/backend";
-import { Policy, PolicyStatement, ServicePrincipal } from "aws-cdk-lib/aws-iam";
+import { Policy, PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { CfnMap } from "aws-cdk-lib/aws-location";
-import { CfnTopicRule } from "aws-cdk-lib/aws-iot";
-import { auth } from "./auth/resource";
-import { data } from "./data/resource";
-import { listSensors } from "./functions/list-sensors/resource";
-import { sendSensorValue } from "./functions/send-sensor-value/resource";
+// import { CfnTopicRule } from "aws-cdk-lib/aws-iot";
+import { auth } from "./auth/resource.js";
+import { data } from "./data/resource.js";
+
+import { queryIotCoreDevices } from "./functions/query-iotcore-devices/resource.js";
+import { getParameterValuesBySensor } from "./functions/get-parameter-values-by-sensor/resource.js";
+import { getSpectrogramReadingsBySensor } from "./functions/get-spectrogram-readings-by-sensor/resource.js";
 
 const backend = defineBackend({
   auth,
   data,
-  listSensors,
-  sendSensorValue,
+
+  queryIotCoreDevices,
+  getParameterValuesBySensor,
+  getSpectrogramReadingsBySensor,
 });
 
 // disable unauthenticated access
@@ -21,12 +26,12 @@ cfnIdentityPool.allowUnauthenticatedIdentities = false;
 // Mapping Resources
 const geoStack = backend.createStack("geo-stack");
 
-// create a map
+// create a Map resource
 const map = new CfnMap(geoStack, "Map", {
   mapName: "SensorMap",
   description: "Sensor Map",
   configuration: {
-    style: "VectorEsriDarkGrayCanvas",
+    style: "VectorHereExplore",
   },
   pricingPlan: "RequestBasedUsage",
   tags: [
@@ -63,7 +68,7 @@ backend.addOutput({
     maps: {
       items: {
         [map.mapName]: {
-          style: "VectorEsriDarkGrayCanvas",
+          style: "VectorHereExplore",
         },
       },
       default: map.mapName,
@@ -71,10 +76,9 @@ backend.addOutput({
   },
 });
 
-// IoT Resources
-
+// IoT Resources:
 // grant the list sensors function access to search all IoT devices
-const listSensorsLambda = backend.listSensors.resources.lambda;
+const listSensorsLambda = backend.queryIotCoreDevices.resources.lambda;
 
 listSensorsLambda.addToRolePolicy(
   new PolicyStatement({
@@ -83,26 +87,4 @@ listSensorsLambda.addToRolePolicy(
   })
 );
 
-const iotStack = backend.createStack("iot-stack");
-
-const sendSensorValueLambda = backend.sendSensorValue.resources.lambda;
-
-// create a rule to process messages from the sensors - send them to the lambda function
-const rule = new CfnTopicRule(iotStack, "SendSensorValueRule", {
-  topicRulePayload: {
-    sql: "select * as data, topic(4) as sensorId from 'dt/bay-health/SF/+/sensor-value'",
-    actions: [
-      {
-        lambda: {
-          functionArn: sendSensorValueLambda.functionArn,
-        },
-      },
-    ],
-  },
-});
-
-// allow IoT rule to invoke the lambda function
-sendSensorValueLambda.addPermission("AllowIoTInvoke", {
-  principal: new ServicePrincipal("iot.amazonaws.com"),
-  sourceArn: `arn:aws:iot:${iotStack.region}:${iotStack.account}:rule/SendSensorValueRule*`,
-});
+// const iotStack = backend.createStack("iot-stack");

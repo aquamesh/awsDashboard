@@ -1,0 +1,22 @@
+{
+    "files": [],
+    "references": [{ "path": "./amplify" }],
+    "compilerOptions": {
+      "target": "es2022",
+      "module": "es2022",
+      "moduleResolution": "bundler",
+      "resolveJsonModule": true,
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "strict": true,
+      "skipLibCheck": true,
+      "baseUrl": ".",
+      "paths": {
+        "$amplify/*": ["./.amplify/generated/*"]
+      }
+    },
+    // "exclude": ["node_modules", ".amplify", "./amplify"],
+    // "include": ["src", ".amplify/generated"]
+    "exclude": ["node_modules", "dist", ".eslintrc.js"]
+  }
+  

@@ -1,4 +1,4 @@
-// ProfileInformation.tsx
+// src/pages/profile/ProfileInformation.tsx
 import React from "react";
 import { Flex, Text, Button } from "@aws-amplify/ui-react";
 
