@@ -1,18 +1,15 @@
 {
   "compilerOptions": {
-    "composite": true, // 👈 Required for project references
-    "target": "ES2020",
-    "module": "NodeNext",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "nodenext",
-    "baseUrl": ".",
+    "target": "es2022",
+    "module": "es2022",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
     "paths": {
       "$amplify/*": ["../.amplify/generated/*"]
     }
-  },
-  "include": ["./**/*"]
+  }
 }
