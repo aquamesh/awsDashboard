@@ -5,5 +5,4 @@ import { defineFunction } from "@aws-amplify/backend";
 export const getSpectrogramReadingsBySensor = defineFunction({
   entry: "./handler.ts",
   name: "getSpectrogramReadingsBySensor",
-  resourceGroupName: "data",
 });

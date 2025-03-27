@@ -2,28 +2,35 @@
 import { defineBackend } from "@aws-amplify/backend";
 import { Policy, PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { CfnMap } from "aws-cdk-lib/aws-location";
-// import { CfnTopicRule } from "aws-cdk-lib/aws-iot";
 import { auth } from "./auth/resource.js";
+import { postConfirmation } from "./auth/post-confirmation/resource.js";
 import { data } from "./data/resource.js";
 
-import { queryIotCoreDevices } from "./functions/query-iotcore-devices/resource.js";
-import { getParameterValuesBySensor } from "./functions/get-parameter-values-by-sensor/resource.js";
-import { getSpectrogramReadingsBySensor } from "./functions/get-spectrogram-readings-by-sensor/resource.js";
+// import { CfnTopicRule } from "aws-cdk-lib/aws-iot";
+// import { queryIotCoreDevices } from "./functions/query-iotcore-devices/resource.js";
+// import { getParameterValuesBySensor } from "./functions/get-parameter-values-by-sensor/resource.js";
+// import { getSpectrogramReadingsBySensor } from "./functions/get-spectrogram-readings-by-sensor/resource.js";
 
 const backend = defineBackend({
-  auth,
-  data,
+  auth, // This is the authentication resource for Cognito
+  postConfirmation, // This is the post-confirmation trigger for Cognito
+  data, // This is the data resource for Amplify DataStore
 
-  queryIotCoreDevices,
-  getParameterValuesBySensor,
-  getSpectrogramReadingsBySensor,
+  // DEBUG: Remove this line to enable the iot backend
+  // queryIotCoreDevices,
+  // getParameterValuesBySensor,
+  // getSpectrogramReadingsBySensor,
 });
 
-// disable unauthenticated access
+
+// Disable unauthenticated access to the identity pool
 const { cfnIdentityPool } = backend.auth.resources.cfnResources;
 cfnIdentityPool.allowUnauthenticatedIdentities = false;
 
+
+//////////////////////////////////////////////////////////////////
 // Mapping Resources
+//////////////////////////////////////////////////////////////////
 const geoStack = backend.createStack("geo-stack");
 
 // create a Map resource
@@ -76,15 +83,18 @@ backend.addOutput({
   },
 });
 
-// IoT Resources:
-// grant the list sensors function access to search all IoT devices
-const listSensorsLambda = backend.queryIotCoreDevices.resources.lambda;
 
-listSensorsLambda.addToRolePolicy(
-  new PolicyStatement({
-    actions: ["iot:SearchIndex"],
-    resources: ["arn:aws:iot:*:*:*"],
-  })
-);
+//////////////////////////////////////////////////////////////////
+// IoT Resources
+//////////////////////////////////////////////////////////////////
+// DEBUG: Remove this to enable the backend
+// const listSensorsLambda = backend.queryIotCoreDevices.resources.lambda; // grant the list sensors function access to search all IoT devices
+
+// listSensorsLambda.addToRolePolicy(
+//   new PolicyStatement({
+//     actions: ["iot:SearchIndex"],
+//     resources: ["arn:aws:iot:*:*:*"],
+//   })
+// );
 
 // const iotStack = backend.createStack("iot-stack");

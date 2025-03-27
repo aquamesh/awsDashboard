@@ -5,5 +5,4 @@ import { defineFunction } from "@aws-amplify/backend";
 export const getParameterValuesBySensor = defineFunction({
   entry: "./handler.ts",
   name: "getParameterValuesBySensor",
-  resourceGroupName: "data",
 });

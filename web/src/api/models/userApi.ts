@@ -6,6 +6,7 @@ import type { Schema } from '../../../amplify/data/resource';
 // Define selection sets as constants for reuse
 export const userAccountSelectionSet = [
   'id',
+  'owner',
   'email',
   'phoneNumber',
   'firstName',
@@ -16,17 +17,18 @@ export const userAccountSelectionSet = [
   'createdAt',
   'updatedAt',
   'settings.*',
-  'organizations.organization.*',
-  'organizations.role',
-  'organizations.joinedAt'
+  'organizations.*',
+  // 'organizations.role',
+  // 'organizations.joinedAt'
 ] as const;
 
-// Define selection set for user organizations
+// TODO: Define selection set for user organizations
 
 
 // Define selection set for user settings
 export const userSettingsSelectionSet = [
   'id',
+  'owner',
   'userId',
   'theme',
   'uiLayout'
@@ -39,6 +41,8 @@ export type UserSettings = SelectionSet<Schema['UserSettings']['type'], typeof u
 // Fetch user profile data
 export async function getUserAccount(userId: string): Promise<UserAccount | null> {
   try {
+    console.log('Fetching user account with ID:', userId);
+
     const { data, errors } = await client.models.User.get(
       { id: userId },
       { selectionSet: userAccountSelectionSet }
@@ -48,10 +52,30 @@ export async function getUserAccount(userId: string): Promise<UserAccount | null
       console.error('Error fetching user account:', errors);
       return null;
     }
-
     return data;
   } catch (error) {
     console.error('Exception when fetching user profile:', error);
+    throw error;
+  }
+}
+
+// Fetch all users we can see
+export async function getAllUsers(): Promise<UserAccount[] | null> {
+  try {
+    // Fetch all users we have permission to access using the User table and list operation
+    const { data, errors } = await client.models.User.list({
+      selectionSet: userAccountSelectionSet
+    });
+
+    if (errors) {
+      console.error('Error fetching all users:', errors);
+      return null;
+    }
+
+    return data;
+  }
+  catch (error) {
+    console.error('Exception when fetching all users:', error);
     throw error;
   }
 }

@@ -10,21 +10,25 @@ import { isUserInOrg } from "../functions/utils/isUserInOrg.js"; // Utility func
 // import { getUserAccessibleOrgs } from '../functions/get-user-accessible-orgs/resource';
 // import { listOrgSensors } from '../functions/list-org-sensors/resource';
 
+
+// References:
+// https://docs.amplify.aws/javascript/build-a-backend/data/customize-authz/
+// https://docs.amplify.aws/react/build-a-backend/functions/examples/create-user-profile-record/
+
 const schema = a
   .schema({
     // User model - connected to Cognito
     User: a.model({
-      // Cognito user ID - fixed reference
-      id: a.id().required(),
-      owner: a.string().required(), // Cognito user ID
+      id: a.id().required(), // Cognito user sub - fixed reference
+      owner: a.string().required(), // Cognito user ownership
+      
       email: a.string().required(), // Cognito email
       phoneNumber: a.string(), // Cognito phone number
-
+      
       // User attributes
       firstName: a.string(),
       lastName: a.string(),
       profilePicture: a.string(),
-      lastLogin: a.datetime(),
       preferences: a.json(),
 
       // Relationships - fixed reference field name
@@ -34,11 +38,12 @@ const schema = a
       settings: a.hasOne('UserSettings', 'userId'),
 
       // Timestamps
+      lastLogin: a.datetime(),
       createdAt: a.datetime(),
       updatedAt: a.datetime(),
 
     }).authorization((allow) => [
-      allow.owner(), // User can access their own data
+      allow.owner(), // User can access their own settings
       allow.group("GlobalAdmin") // Global admins can manage all users
     ]),
 
@@ -65,6 +70,8 @@ const schema = a
       createdAt: a.datetime(),
       updatedAt: a.datetime(),
     }).authorization((allow) => [
+      // TODO: Add organization-specific access control (custom authorizer)
+      allow.authenticated(),
       // Global admins can access all orgs
       allow.group("GlobalAdmin"),
     ]),
@@ -76,7 +83,7 @@ const schema = a
       organizationId: a.id().required(),
 
       // Permission level stored as a string (Owner, Admin, User)
-      role: a.string(),
+      role: a.string().required(),
 
       // References to both models - fixed relationships
       user: a.belongsTo('User', 'userId'),
@@ -96,16 +103,19 @@ const schema = a
       // TODO: Index for both userId and organizationId
     ])
     .authorization((allow) => [
+      // TODO: Add organization/user-specific access control (custom authorizer), for now allow unrestricted access
+      allow.authenticated(),
       // Global admins can manage all memberships
       allow.group("GlobalAdmin"),
+      
     ]),
 
 
     // SensorOrganization model - many to many relationship between Sensor and Organization
     SensorOrganization: a.model({
       // References to both models - fixed relationships
-      sensorId: a.string().required(),
-      organizationId: a.string().required(),
+      sensorId: a.id().required(),
+      organizationId: a.id().required(),
 
       // Relationship back to sensor and organization
       sensor: a.belongsTo('Sensor', 'sensorId'),
@@ -121,6 +131,8 @@ const schema = a
       index("organizationId"), // Index for organizationId
     ])
     .authorization((allow) => [
+      // TODO: Add organization-specific access control (custom authorizer)
+      allow.authenticated(),
       // Global admins can access all sensor organizations
       allow.group("GlobalAdmin"),
     ]),
@@ -161,6 +173,8 @@ const schema = a
       alerts: a.hasMany('SensorAlert', 'sensorId'),
 
     }).authorization((allow) => [
+      // TODO: Add organization-specific access control (custom authorizer)
+      allow.authenticated(),
       // Global admins can access all sensors
       allow.group('GlobalAdmin'),
     ]),
@@ -188,6 +202,8 @@ const schema = a
       // Relationship back to sensor - fixed reference
       sensor: a.belongsTo('Sensor', 'sensorId'),
     }).authorization((allow) => [
+      // TODO: Add organization-specific access control (custom authorizer)
+      allow.authenticated(),
       // Global admins can access all parameter values
       allow.group('GlobalAdmin'),
     ]),
@@ -221,6 +237,8 @@ const schema = a
       // Relationship back to sensor - fixed reference
       sensor: a.belongsTo('Sensor', 'sensorId'),
     }).authorization((allow) => [
+      // TODO: Add organization-specific access control (custom authorizer)
+      allow.authenticated(),
       // Global admins can access all spectrogram readings
       allow.group('GlobalAdmin'),
     ]),
@@ -248,6 +266,8 @@ const schema = a
       organizationId: a.string(),
 
     }).authorization((allow) => [
+      // TODO: Add organization-specific access control (custom authorizer)
+      allow.authenticated(),
       // Global admins can manage all parameter configs
       allow.group('GlobalAdmin'),
     ]),
@@ -270,6 +290,8 @@ const schema = a
       // Relationship back to sensor - fixed reference
       sensor: a.belongsTo('Sensor', 'sensorId'),
     }).authorization((allow) => [
+      // TODO: Add organization-specific access control (custom authorizer)
+      allow.authenticated(),
       // Global admins can access all alerts
       allow.group('GlobalAdmin'),
     ]),
@@ -282,50 +304,51 @@ const schema = a
 
     // UserSettings model one to one with User
     UserSettings: a.model({
-      // User Settings here
-      theme: a.string(),
-      uiLayout: a.json(),
+      owner: a.string().required(), // Ownership field
 
       // Reference back to user - fixed reference
-      userId: a.id().required(),
-      user: a.belongsTo('User', 'userId'),
+      userId: a.id().required(), // Cognito user ID
+      user: a.belongsTo('User', 'userId'), // Reference to User
 
-      owner: a.string().required(), // Cognito user ID
+      // User Settings
+      theme: a.string(),
+      uiLayout: a.json(),
     })
     .secondaryIndexes((index) => [
-      index("userId"), // Index for userId
+      index("userId"), // Index on userId
     ])
     .authorization((allow) => [
-      allow.owner(),
+      allow.owner(), // User can access their own settings
+      allow.group("GlobalAdmin") // Global admins can manage all user settings
     ]),
 
     // Queries and mutations
-    listIotCoreDevices: a
-      .query()
-      .returns(a.ref("Sensor").array())
-      .handler(a.handler.function(queryIotCoreDevices)),
+    // listIotCoreDevices: a
+    //   .query()
+    //   .returns(a.ref("Sensor").array())
+    //   .handler(a.handler.function(queryIotCoreDevices)),
 
-    getParameterValuesBySensor: a
-      .query()
-      .arguments({
-        sensorId: a.string().required(),
-        startTime: a.string().required(),
-        endTime: a.string().required(),
-        parameterNames: a.string().array() // Optional filter
-      })
-      .returns(a.ref('ParameterValue').array())
-      .handler(a.handler.function(getParameterValuesBySensor)),
+    // getParameterValuesBySensor: a
+    //   .query()
+    //   .arguments({
+    //     sensorId: a.string().required(),
+    //     startTime: a.string().required(),
+    //     endTime: a.string().required(),
+    //     parameterNames: a.string().array() // Optional filter
+    //   })
+    //   .returns(a.ref('ParameterValue').array())
+    //   .handler(a.handler.function(getParameterValuesBySensor)),
 
-    getSpectrogramReadingsBySensor: a
-      .query()
-      .arguments({
-        sensorId: a.string().required(),
-        startTime: a.string().required(),
-        endTime: a.string().required(),
-        ledWavelength: a.float() // Optional filter
-      })
-      .returns(a.ref('SpectrogramReading').array())
-      .handler(a.handler.function(getSpectrogramReadingsBySensor)),
+    // getSpectrogramReadingsBySensor: a
+    //   .query()
+    //   .arguments({
+    //     sensorId: a.string().required(),
+    //     startTime: a.string().required(),
+    //     endTime: a.string().required(),
+    //     ledWavelength: a.float() // Optional filter
+    //   })
+    //   .returns(a.ref('SpectrogramReading').array())
+    //   .handler(a.handler.function(getSpectrogramReadingsBySensor)),
 
     // getUserAccessibleOrgs: a
     //   .query()
@@ -337,13 +360,14 @@ const schema = a
     //   .returns(a.ref('Sensor').array())
     //   .handler(a.handler.function(listOrgSensors)),
   })
+
   .authorization((allow) => [
-    allow.authenticated(),
+    allow.authenticated(), // All authenticated users can access the API
+    allow.resource(postConfirmation), // Post-confirmation trigger for Cognito
     // allow.resource(getUserAccessibleOrgs),
     // allow.resource(listOrgSensors),
-    allow.resource(postConfirmation),
-    allow.resource(getParameterValuesBySensor).to(['query']),
-    allow.resource(getSpectrogramReadingsBySensor),
+    // allow.resource(getParameterValuesBySensor).to(['query']), // Allow all users to query parameter values
+    // allow.resource(getSpectrogramReadingsBySensor), // Allow all users to query spectrogram readings
   ]);
 
 export type Schema = ClientSchema<typeof schema>;
