@@ -1,7 +1,7 @@
 // src/App.jsx - Main application file
 import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
-import { ThemeProvider, withAuthenticator } from "@aws-amplify/ui-react";
+import { ThemeProvider, Authenticator } from "@aws-amplify/ui-react";
 import { Amplify } from "aws-amplify";
 
 import "@aws-amplify/ui-react/styles.css";
@@ -22,6 +22,8 @@ Amplify.configure(awsExports);
 
 const App = () => {
   return (
+    <Authenticator hideSignUp={false}>
+      {({ signOut, user }) => (
     <ThemeProvider theme={theme}>
       <div>
         {/* Routes nest inside one another. Nested route paths build upon
@@ -43,6 +45,8 @@ const App = () => {
         </Routes>
       </div>
     </ThemeProvider>
+    )}
+    </Authenticator>
   );
 };
 
@@ -58,4 +62,4 @@ function NoMatch() {
   );
 }
 
-export default withAuthenticator(App, { hideSignUp: false });
+export default App;
