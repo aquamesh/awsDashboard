@@ -1,47 +1,171 @@
 // src/pages/profile/ProfileInformation.tsx
-import React from "react";
-import { Flex, Text, Button } from "@aws-amplify/ui-react";
+import React, { useState } from "react";
+import { Flex, Text, Button, TextField, View, Card } from "@aws-amplify/ui-react";
+import { updateUserProfile } from "../../api/models/userApi";
+import type { UserAccount } from "../../api/models/userApi";
 
-const ProfileInformation = ({ user = {} }) => {
-  return (
-    <div className="profile-card-content">
-      <Text fontWeight="600" fontSize="18px" marginBottom="14px">
-        Profile Information
-      </Text>
+interface ProfileInformationProps {
+  user: UserAccount | null;
+  attributes: Record<string, any> | undefined; // Fallback Cognito attributes
+}
+
+const ProfileInformation: React.FC<ProfileInformationProps> = ({ user, attributes = {} }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    phoneNumber: user?.phoneNumber || attributes?.phone_number || "",
+    email: user?.email || attributes?.email || "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSave = async () => {
+    if (!user?.id) return;
+    
+    setIsLoading(true);
+    try {
+      await updateUserProfile(user.id, {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phoneNumber: formData.phoneNumber,
+        // Note: Email updates might require verification in a real app
+        email: formData.email,
+      });
+      
+      // Success - close edit mode
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Failed to update profile:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCancel = () => {
+    // Reset form data to original values
+    setFormData({
+      firstName: user?.firstName || "",
+      lastName: user?.lastName || "",
+      phoneNumber: user?.phoneNumber || attributes?.phone_number || "",
+      email: user?.email || attributes?.email || "",
+    });
+    setIsEditing(false);
+  };
+
+  // Display user information in view mode
+  const renderViewMode = () => (
+    <>
       <Flex>
         <Text variation="tertiary" fontWeight="600" marginRight="0.5rem">
-          Full Name:
+          First Name:
         </Text>
-        <Text variation="tertiary">{user.name || "N/A"}</Text>
+        <Text variation="tertiary">{user?.firstName || attributes?.given_name || "N/A"}</Text>
+      </Flex>
+      <Flex>
+        <Text variation="tertiary" fontWeight="600" marginRight="0.5rem">
+          Last Name:
+        </Text>
+        <Text variation="tertiary">{user?.lastName || attributes?.family_name || "N/A"}</Text>
       </Flex>
       <Flex>
         <Text variation="tertiary" fontWeight="600" marginRight="0.5rem">
           Phone:
         </Text>
-        <Text variation="tertiary">{user.phone_number || "N/A"}</Text>
+        <Text variation="tertiary">{user?.phoneNumber || attributes?.phone_number || "N/A"}</Text>
       </Flex>
       <Flex>
         <Text variation="tertiary" fontWeight="600" marginRight="0.5rem">
           Email:
         </Text>
-        <Text variation="tertiary">{user.email || "N/A"}</Text>
+        <Text variation="tertiary">{user?.email || attributes?.email || "N/A"}</Text>
       </Flex>
-      <Flex>
-        <Text variation="tertiary" fontWeight="600" marginRight="0.5rem">
-          Location:
-        </Text>
-        <Text variation="tertiary">{user.locale || "United States"}</Text>
-      </Flex>
+      {user?.lastLogin && (
+        <Flex>
+          <Text variation="tertiary" fontWeight="600" marginRight="0.5rem">
+            Last Login:
+          </Text>
+          <Text variation="tertiary">
+            {new Date(user.lastLogin).toLocaleString()}
+          </Text>
+        </Flex>
+      )}
 
       <div className="profile-card-edit">
-        <Button marginLeft="auto">Edit</Button>
+        <Button onClick={() => setIsEditing(true)}>Edit</Button>
       </div>
+    </>
+  );
+
+  // Edit mode with inline form
+  const renderEditMode = () => (
+    <Card>
+      <Flex direction="column" gap="1rem">
+        <TextField
+          label="First Name"
+          name="firstName"
+          value={formData.firstName}
+          onChange={handleChange}
+        />
+        <TextField
+          label="Last Name"
+          name="lastName"
+          value={formData.lastName}
+          onChange={handleChange}
+        />
+        <TextField
+          label="Phone"
+          name="phoneNumber"
+          value={formData.phoneNumber}
+          onChange={handleChange}
+        />
+        <TextField
+          label="Email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          descriptiveText="Email changes may require verification"
+        />
+        
+        <Flex justifyContent="flex-end" gap="0.5rem">
+          <Button 
+            onClick={handleCancel}
+            // variation="secondary"
+          >
+            Cancel
+          </Button>
+          <Button 
+            onClick={handleSave}
+            isLoading={isLoading}
+          >
+            Save Changes
+          </Button>
+        </Flex>
+      </Flex>
+    </Card>
+  );
+
+  return (
+    <div className="profile-card-content">
+      <Text fontWeight="600" fontSize="18px" marginBottom="14px">
+        Profile Information
+      </Text>
+      
+      {isEditing ? renderEditMode() : renderViewMode()}
 
       {/* Debug info - can remove later */}
       {process.env.NODE_ENV === "development" && (
-        <pre style={{ marginTop: "1rem", fontSize: "12px" }}>
+        <View as="pre" style={{ marginTop: "1rem", fontSize: "12px", overflow: "auto" }}>
+          <strong>user:</strong>
           {JSON.stringify(user, null, 2)}
-        </pre>
+          <br />
+          <strong>cognito_attributes:</strong>
+          {JSON.stringify(attributes, null, 2)}
+        </View>
       )}
     </div>
   );

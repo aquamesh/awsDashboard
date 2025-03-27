@@ -38,7 +38,7 @@
 ├── dist
 │   ├── assets
 │   │   ├── index-BWvVXfbr.css
-│   │   └── index-CaTuNvDT.js
+│   │   └── index-wCaSPpZp.js
 │   ├── favicon.ico
 │   ├── index.html
 │   ├── logo.png
@@ -47,7 +47,6 @@
 │   ├── manifest.json
 │   └── robots.txt
 ├── index.html
-├── jsconfig.json
 ├── package-lock.json
 ├── package.json
 ├── public
@@ -61,8 +60,14 @@
 ├── src
 │   ├── App.css
 │   ├── App.jsx
-│   ├── amplify
-│   │   └── client.ts
+│   ├── api
+│   │   ├── client.ts
+│   │   ├── hooks
+│   │   │   └── useUser.ts
+│   │   ├── models
+│   │   │   ├── index.ts
+│   │   │   └── userApi.ts
+│   │   └── utils
 │   ├── components
 │   │   ├── Charts
 │   │   │   └── BarChart.tsx
@@ -156,4 +161,4 @@
 ├── vite-env.d.ts
 └── vite.config.js
 
-37 directories, 120 files
+40 directories, 122 files

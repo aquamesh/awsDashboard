@@ -16,6 +16,7 @@ const schema = a
     User: a.model({
       // Cognito user ID - fixed reference
       id: a.id().required(),
+      owner: a.string().required(), // Cognito user ID
       email: a.string().required(), // Cognito email
       phoneNumber: a.string(), // Cognito phone number
 
@@ -37,11 +38,8 @@ const schema = a
       updatedAt: a.datetime(),
 
     }).authorization((allow) => [
-      // Only Users can access their own data
-      allow.owner(),
-
-      // Global admins can manage all users
-      allow.group("GlobalAdmin")
+      allow.owner(), // User can access their own data
+      allow.group("GlobalAdmin") // Global admins can manage all users
     ]),
 
     // Organization model
@@ -78,21 +76,26 @@ const schema = a
       organizationId: a.id().required(),
 
       // Permission level stored as a string (Owner, Admin, User)
-      role: a.string().required(),
+      role: a.string(),
 
       // References to both models - fixed relationships
       user: a.belongsTo('User', 'userId'),
       organization: a.belongsTo('Organization', 'organizationId'),
 
       // Additional metadata
-      joinedAt: a.datetime().required(),
+      joinedAt: a.datetime(),
       invitedBy: a.string(), // User ID who invited this user
 
       // Timestamps
       createdAt: a.datetime(),
       updatedAt: a.datetime(),
-
-    }).authorization((allow) => [
+    })
+    .secondaryIndexes((index) => [
+      index("userId"), // Index for userId
+      index("organizationId"), // Index for organizationId
+      // TODO: Index for both userId and organizationId
+    ])
+    .authorization((allow) => [
       // Global admins can manage all memberships
       allow.group("GlobalAdmin"),
     ]),
@@ -112,7 +115,12 @@ const schema = a
       createdAt: a.datetime(),
       updatedAt: a.datetime(),
 
-    }).authorization((allow) => [
+    })
+    .secondaryIndexes((index) => [
+      index("sensorId"), // Index for sensorId
+      index("organizationId"), // Index for organizationId
+    ])
+    .authorization((allow) => [
       // Global admins can access all sensor organizations
       allow.group("GlobalAdmin"),
     ]),
@@ -126,7 +134,7 @@ const schema = a
       longitude: a.float().required(),
       locationName: a.string(),
       status: a.integer().required(),
-      enabled: a.boolean().required().default(true),
+      enabled: a.boolean().required().default(false),
       firmwareVersion: a.string(),
       hardwareVersion: a.string(),
       batteryLevel: a.float(),
@@ -272,16 +280,22 @@ const schema = a
       longitude: a.float(),
     }),
 
-    // Modified UserSettings model to connect to User
+    // UserSettings model one to one with User
     UserSettings: a.model({
-      // id: a.id(),
-      userId: a.string().required(),
+      // User Settings here
       theme: a.string(),
       uiLayout: a.json(),
 
       // Reference back to user - fixed reference
+      userId: a.id().required(),
       user: a.belongsTo('User', 'userId'),
-    }).authorization((allow) => [
+
+      owner: a.string().required(), // Cognito user ID
+    })
+    .secondaryIndexes((index) => [
+      index("userId"), // Index for userId
+    ])
+    .authorization((allow) => [
       allow.owner(),
     ]),
 
@@ -327,6 +341,7 @@ const schema = a
     allow.authenticated(),
     // allow.resource(getUserAccessibleOrgs),
     // allow.resource(listOrgSensors),
+    allow.resource(postConfirmation),
     allow.resource(getParameterValuesBySensor).to(['query']),
     allow.resource(getSpectrogramReadingsBySensor),
   ]);
@@ -337,5 +352,8 @@ export const data = defineData({
   schema,
   authorizationModes: {
     defaultAuthorizationMode: "userPool",
+    apiKeyAuthorizationMode: {
+      expiresInDays: 30,
+    },
   },
 });
