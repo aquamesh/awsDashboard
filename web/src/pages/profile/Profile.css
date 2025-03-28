@@ -82,3 +82,8 @@ hr.profile-divider {
     border: none;
     margin: 20px 0 25px;
 }
+
+/* Debug View Styles */
+.debug-action {
+    margin-bottom: 20px;
+}

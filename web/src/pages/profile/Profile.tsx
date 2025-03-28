@@ -5,8 +5,13 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import ProfileHeader from "./ProfileHeader";
 import ProfileInformation from "./ProfileInformation";
 import ProfileSettings from "./ProfileSettings";
-import DebugInfo from "./DebugInfo";
-import { getUserAccount, UserAccount, getUserSettings } from "../../api/models/userApi";
+import DebugView, { DebugAction } from "../../components/DebugView/DebugView";
+import {
+  getUserAccount,
+  UserAccount,
+  getUserSettings,
+  getAllUsers
+} from "../../api/models/userApi";
 import "./Profile.css";
 
 const Profile = () => {
@@ -46,6 +51,18 @@ const Profile = () => {
     fetchUserData();
   }, [user]);
 
+  // Centralized data fetching function for debug purposes
+  const handleFetchAllUsers = async () => {
+    try {
+      const users = await getAllUsers();
+      console.log("All Users:", users);
+      return users; // Return for DebugView component
+    } catch (err) {
+      console.error("Failed to fetch all users:", err);
+      throw new Error("Failed to fetch all users");
+    }
+  };
+
   if (loading) {
     return (
       <View padding="2rem" textAlign="center">
@@ -64,6 +81,15 @@ const Profile = () => {
     );
   }
 
+  // Define debug actions for DebugView
+  const debugActions: DebugAction[] = [
+    {
+      label: "Fetch All Users",
+      action: handleFetchAllUsers,
+      resultLabel: "All Users"
+    }
+    // TODO: Add more debug actions here if needed
+  ];
 
   return (
     <>
@@ -106,14 +132,17 @@ const Profile = () => {
         {/* Debug section */}
         {process.env.NODE_ENV === "development" && (
           <div className="profile-card" style={{ marginTop: "20px" }}>
-            <DebugInfo userProfile={userProfile} />
+            <DebugView
+              title="Debug Info"
+              initialData={userProfile}
+              initialDataLabel="Current User Profile"
+              actions={debugActions}
+            />
           </div>
         )}
       </div>
     </>
   );
-
 };
-
 
 export default Profile;
