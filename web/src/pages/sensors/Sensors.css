@@ -1,4 +1,4 @@
-/* Styles for the Sensors page */
+/* src/pages/sensors/Sensors.css - Styles for the Sensors page */
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -12,10 +12,10 @@
     gap: 8px;
 }
 
-.card-title {
+/* .card-title {
     font-size: 16px;
     margin-bottom: 16px;
-}
+} */
 
 .sensor-link {
     color: var(--amplify-colors-brand-primary-80);

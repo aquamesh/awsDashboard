@@ -1,6 +1,6 @@
 // src/pages/profile/ProfileInformation.tsx
 import React, { useState } from "react";
-import { Flex, Text, Button, TextField, View, Card } from "@aws-amplify/ui-react";
+import { Flex, Text, Button, TextField, Card } from "@aws-amplify/ui-react";
 import { updateUserProfile } from "../../api/models/userApi";
 import type { UserAccount } from "../../api/models/userApi";
 
@@ -26,7 +26,7 @@ const ProfileInformation: React.FC<ProfileInformationProps> = ({ user, attribute
 
   const handleSave = async () => {
     if (!user?.id) return;
-    
+
     setIsLoading(true);
     try {
       await updateUserProfile(user.id, {
@@ -36,7 +36,7 @@ const ProfileInformation: React.FC<ProfileInformationProps> = ({ user, attribute
         // Note: Email updates might require verification in a real app
         email: formData.email,
       });
-      
+
       // Success - close edit mode
       setIsEditing(false);
     } catch (error) {
@@ -96,7 +96,13 @@ const ProfileInformation: React.FC<ProfileInformationProps> = ({ user, attribute
       )}
 
       <div className="profile-card-edit">
-        <Button onClick={() => setIsEditing(true)}>Edit</Button>
+        <Button
+          onClick={() => setIsEditing(true)}
+          // marginBottom="10px"
+          // variation="secondary"
+        >
+          Edit
+        </Button>
       </div>
     </>
   );
@@ -130,15 +136,15 @@ const ProfileInformation: React.FC<ProfileInformationProps> = ({ user, attribute
           onChange={handleChange}
           descriptiveText="Email changes may require verification"
         />
-        
+
         <Flex justifyContent="flex-end" gap="0.5rem">
-          <Button 
+          <Button
             onClick={handleCancel}
-            // variation="secondary"
+          // variation="secondary"
           >
             Cancel
           </Button>
-          <Button 
+          <Button
             onClick={handleSave}
             isLoading={isLoading}
           >
@@ -154,19 +160,8 @@ const ProfileInformation: React.FC<ProfileInformationProps> = ({ user, attribute
       <Text fontWeight="600" fontSize="18px" marginBottom="14px">
         Profile Information
       </Text>
-      
-      {isEditing ? renderEditMode() : renderViewMode()}
 
-      {/* Debug info - can remove later */}
-      {process.env.NODE_ENV === "development" && (
-        <View as="pre" style={{ marginTop: "1rem", fontSize: "12px", overflow: "auto" }}>
-          <strong>user:</strong>
-          {JSON.stringify(user, null, 2)}
-          <br />
-          <strong>cognito_attributes:</strong>
-          {JSON.stringify(attributes, null, 2)}
-        </View>
-      )}
+      {isEditing ? renderEditMode() : renderViewMode()}
     </div>
   );
 };

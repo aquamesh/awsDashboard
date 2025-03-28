@@ -55,12 +55,12 @@ export const ValueTile: React.FC<ValueTileProps> = ({ data }) => {
     <Card height="100%" borderRadius="15px">
       <div className="card-content value-tile-content">
         <div className="card-header">
-          <div 
+          <h3 
             className="card-title" 
             title={data.title} // Add tooltip with full title
           >
             {displayTitle}
-          </div>
+          </h3>
           <div className="card-statistics-icon">
             {renderIcon()}
           </div>
@@ -152,12 +152,12 @@ export const ChartTile: React.FC<ChartTileProps> = ({ data }) => {
 
   return (
     <Card height="100%" borderRadius="15px">
-      <div 
+      <h3 
         className="card-title"
         title={data.title} // Add tooltip with full title
       >
         {displayTitle}
-      </div>
+      </h3>
       <div className="chart-wrap">
         <Chart
           series={data.chartData}
@@ -183,12 +183,12 @@ export const MapTile: React.FC<MapTileProps> = ({ data }) => {
 
   return (
     <Card height="100%" borderRadius="15px">
-      <div 
+      <h3 
         className="card-title"
         title={data.title} // Add tooltip with full title
       >
         {displayTitle}
-      </div>
+      </h3>
       <div className="map-wrap" style={{ height: "calc(100% - 30px)" }}>
         <Map />
       </div>

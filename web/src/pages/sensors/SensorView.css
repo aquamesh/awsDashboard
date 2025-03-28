@@ -1,4 +1,4 @@
-/* SensorView.css */
+/* src/pages/sensors/SensorView.css - CSS */
 .page-header {
   display: flex;
   justify-content: space-between;
@@ -123,19 +123,19 @@
 }
 
 /* Card header for title and icon alignment */
-.card-header {
+/* .card-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
   margin-bottom: 10px;
-}
+} */
 
-.card-title {
+/* .card-title {
   font-size: 14px;
   font-weight: 600;
   margin: 0;
-}
+} */
 
 /* Improved placeholder styling */
 .react-grid-item.react-grid-placeholder {
@@ -314,10 +314,5 @@
 
   .floating-edit-button:hover {
     width: 100px;
-  }
-  
-  /* Adjust card responsiveness */
-  .card-content {
-    min-height: 150px;
   }
 }

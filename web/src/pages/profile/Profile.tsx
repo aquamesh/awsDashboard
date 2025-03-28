@@ -1,10 +1,11 @@
-// src/pages/profile/Profile.tsx
+// src/pages/profile/Profile.tsx - Profile component for displaying user profile information and settings.
 import React, { useEffect, useState } from "react";
 import { View, Flex, useTheme, Loader } from "@aws-amplify/ui-react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import ProfileHeader from "./ProfileHeader";
 import ProfileInformation from "./ProfileInformation";
 import ProfileSettings from "./ProfileSettings";
+import DebugInfo from "./DebugInfo";
 import { getUserAccount, UserAccount, getUserSettings } from "../../api/models/userApi";
 import "./Profile.css";
 
@@ -21,20 +22,17 @@ const Profile = () => {
       if (user && user.username) {
         try {
           setLoading(true);
-          
+
           // Fetch user profile data
           const profileData = await getUserAccount(user.userId);
-          console.log("Profile Data:", profileData);
           setUserProfile(profileData);
 
-          
           // Fetch user settings
           const settings = await getUserSettings(user.userId);
-          console.log('User settings:', settings);
           if (settings) {
             setUserSettings(settings);
           }
-          
+
           setError(null);
         } catch (err) {
           console.error("Error fetching user data:", err);
@@ -66,67 +64,56 @@ const Profile = () => {
     );
   }
 
+
   return (
     <>
       <div>
         <h2>Profile</h2>
       </div>
-      <View maxWidth="100%" padding="0rem" minHeight="100vh">
-        <Flex
-          direction={{ base: "column", large: "row" }}
-          alignItems="flex-start"
-          gap={tokens.space.xl}
-          marginBottom="30px"
-        >
-          <View
-            backgroundColor="var(--amplify-colors-white)"
-            borderRadius="6px"
-            width={{ base: "100%", large: "100%" }}
-            padding="1rem"
-          >
+      <div className="profile-container">
+        {/* Header section */}
+        <div className="profile-header-row">
+          <div className="profile-header-card">
             <ProfileHeader
-              name={userProfile?.firstName && userProfile?.lastName 
-                ? `${userProfile.firstName} ${userProfile.lastName}` 
+              name={userProfile?.firstName && userProfile?.lastName
+                ? `${userProfile.firstName} ${userProfile.lastName}`
                 : "User"}
               email={userProfile?.email || ""}
               profilePicture={null}
-              organization={userProfile?.organizations?.[0]?.organization?.name}
+              /* For now lets pass the userId as the organization name */
+              organization={userProfile?.id || "N/A"}
             />
-          </View>
-        </Flex>
+          </div>
+        </div>
 
-        <Flex
-          direction={{ base: "column", large: "row" }}
-          gap={tokens.space.xl}
-          alignItems="flex-start"
-        >
-          <View
-            backgroundColor="var(--amplify-colors-white)"
-            borderRadius="6px"
-            width={{ base: "100%", large: "40%" }}
-            padding={{ base: "1em", large: "1.5rem" }}
-          >
-            <ProfileInformation 
-              user={userProfile} 
+        {/* Main content section */}
+        <div className="profile-row">
+          <div className="profile-card">
+            <ProfileInformation
+              user={userProfile}
               attributes={{}}
             />
-          </View>
-          <View
-            backgroundColor="var(--amplify-colors-white)"
-            borderRadius="6px"
-            width={{ base: "100%", large: "40%" }}
-            padding={{ base: "1em", large: "1.5rem" }}
-          >
-            <ProfileSettings 
-              userId={user?.username} 
+          </div>
+          <div className="profile-card">
+            <ProfileSettings
+              userId={user?.username}
               settings={userSettings}
               onSettingsUpdated={(newSettings) => setUserSettings(newSettings)}
             />
-          </View>
-        </Flex>
-      </View>
+          </div>
+        </div>
+
+        {/* Debug section */}
+        {process.env.NODE_ENV === "development" && (
+          <div className="profile-card" style={{ marginTop: "20px" }}>
+            <DebugInfo userProfile={userProfile} />
+          </div>
+        )}
+      </div>
     </>
   );
+
 };
+
 
 export default Profile;

@@ -18,11 +18,17 @@ export const handler: PostConfirmationTriggerHandler = async (event) => {
   
   // Step 1: Create User
   await client.models.User.create({
+    // ID attributes
     id: event.request.userAttributes.sub, // global sub id
     owner: `${event.request.userAttributes.sub}::${event.userName}`, // this is the owner of the user
     
+    // Info from Cognito
     email: event.request.userAttributes.email,
 
+    // Optional attributes
+    userSetupStage: 0, // 0 = not set up
+
+    // Timestamp attributes
     lastLogin: new Date().toISOString(),
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),

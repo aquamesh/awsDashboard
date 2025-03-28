@@ -202,7 +202,7 @@ const Sensors: React.FC = () => {
         minHeight="calc(100vh - 120px)"
       >
         <Card borderRadius="15px">
-          <div className="card-title">All Sensors</div>
+        <h3 style={{ marginTop: 0 }}>All Sensors</h3>
           
           {loading ? (
             <Flex direction="column" minHeight="285px">

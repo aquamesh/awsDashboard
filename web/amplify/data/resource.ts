@@ -35,6 +35,7 @@ const schema = a
       organizations: a.hasMany('UserOrganization', 'userId'),
 
       // User Settings (one-to-one relationship)
+      userSetupStage: a.integer().required().default(0), // 0=not set up, 1=setup in progress, 2=setup complete
       settings: a.hasOne('UserSettings', 'userId'),
 
       // Timestamps

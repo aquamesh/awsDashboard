@@ -11,7 +11,7 @@ const ProfileHeader = ({
   return (
     <Flex direction={{ base: "column", large: "row" }} alignItems="flex-start">
       <div className="profile-header-image">
-        <img 
+        <img
           alt="Profile avatar" 
           src={profilePicture || "https://placehold.co/512x512/png"} 
         />

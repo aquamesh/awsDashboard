@@ -41,8 +41,6 @@ export type UserSettings = SelectionSet<Schema['UserSettings']['type'], typeof u
 // Fetch user profile data
 export async function getUserAccount(userId: string): Promise<UserAccount | null> {
   try {
-    console.log('Fetching user account with ID:', userId);
-
     const { data, errors } = await client.models.User.get(
       { id: userId },
       { selectionSet: userAccountSelectionSet }

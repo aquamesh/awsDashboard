@@ -18,6 +18,7 @@
 .dashboard-grid .grid-item > .amplify-card {
     height: 100%;
     display: flex;
+    gap: 20px;
     flex-direction: column;
     overflow: hidden;
 }
@@ -28,14 +29,14 @@
     justify-content: space-between;
     align-items: flex-start;
     width: 100%;
-    margin-bottom: 5px;
+    margin-bottom: 20px;
 }
 
 /* Card title */
 .card-title {
-    font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     margin: 0;
+/*     
     padding-top: 2px;
     display: inline-flex;
     align-items: center;
@@ -43,7 +44,7 @@
     max-height: 20px;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: nowrap; */
 }
 
 /* Card content container */
@@ -62,18 +63,13 @@
     height: 100%;
 }
 
-/* Fixed height header for consistent spacing */
-.value-tile-content .card-header {
-    height: 32px;
-}
-
 /* Container for value display to ensure consistent positioning */
 .value-container {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-bottom: 8px;
+    /* padding-bottom: 8px; */
 }
 
 /* Statistics icon */
@@ -125,6 +121,7 @@
     height: calc(100% - 30px);
     width: 100%;
     overflow: hidden;
+    border-radius: 16px;
 }
 
 /* Fix ApexCharts SVG positioning */

@@ -1,35 +1,68 @@
 /* src/pages/profile/Profile.css */
+/* Profile header styles */
 .profile-header-image {
     width: 66px;
     height: 66px;
-    font-size: 14px;
     border-radius: 50%;
     overflow: hidden;
 }
 
 .profile-header-image img {
-    width: 66px;
-    height: 66px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .profile-header-text {
     padding: 8px;
 }
 
-hr.profile-divider {
-    background: var(--amplify-colors-neutral-40);
-    height: 1px;
-    border: none;
-    margin: 20px 0 25px;
+/* Profile content layout */
+.profile-container {
+    max-width: 100%;
+    padding: 0;
+    min-height: 100vh;
 }
 
+.profile-header-row {
+    display: flex;
+    margin-bottom: 30px;
+}
+
+.profile-header-card {
+    background-color: var(--amplify-colors-white);
+    border-radius: 6px;
+    padding: 1rem;
+    width: 100%;
+}
+
+.profile-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.profile-card {
+    flex: 1;
+    background-color: var(--amplify-colors-white);
+    border-radius: 6px;
+    padding: 1.5rem;
+}
+
+/* For mobile responsiveness */
+@media (max-width: 768px) {
+    .profile-row {
+        flex-direction: column;
+    }
+    
+    .profile-card {
+        width: 100%;
+    }
+}
+
+/* Content styling */
 .profile-card-content .amplify-flex {
     margin-bottom: 10px;
-}
-
-.profile-card-content .amplify-switchfield {
-    margin-bottom: 0;
-    display: block;
 }
 
 .profile-card-content {
@@ -37,9 +70,15 @@ hr.profile-divider {
     min-height: 250px;
 }
 
-
 .profile-card-edit {
     position: absolute;
     bottom: 0px;
     right: 0px;
+}
+
+hr.profile-divider {
+    background: var(--amplify-colors-neutral-40);
+    height: 1px;
+    border: none;
+    margin: 20px 0 25px;
 }
