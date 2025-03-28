@@ -312,8 +312,8 @@ const schema = a
       user: a.belongsTo('User', 'userId'), // Reference to User
 
       // User Settings
-      theme: a.string().default("light"), // Default theme
-      uiLayout: a.json().default({}), // Default UI layout
+      theme: a.string(),
+      uiLayout: a.json(),
     })
     .secondaryIndexes((index) => [
       index("userId"), // Index on userId
