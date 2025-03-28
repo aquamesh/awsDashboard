@@ -7,6 +7,7 @@ import type { Schema } from '../../../amplify/data/resource';
 export const userAccountSelectionSet = [
   'id',
   'owner',
+
   'email',
   'phoneNumber',
   'firstName',
@@ -29,6 +30,7 @@ export const userAccountSelectionSet = [
 export const userSettingsSelectionSet = [
   'id',
   'owner',
+
   'userId',
   'theme',
   'uiLayout'
@@ -188,16 +190,13 @@ export async function getUserSettings(userId: string) {
   // Query the User table to find the user's settings
   const { data, errors } = await client.models.User.get(
     { id: userId },
-    { selectionSet: ['settings.id'] }
+    { selectionSet: userAccountSelectionSet }
   );
 
   if (errors) {
     console.error('Error fetching user settings:', errors);
     return null;
   }
-
-  // Print all the settings found
-  console.log('User settings:', data?.settings);
 
   // If the user has no settings, return null
   if (!data?.settings) {
