@@ -49,7 +49,7 @@ export const handler: PostConfirmationTriggerHandler = async (event) => {
 
     // Set default values for settings
     theme: "light",
-    uiLayout: {},
+    uiLayout: JSON.stringify({}),
   });
 
   // Check for errors in creating the user settings
