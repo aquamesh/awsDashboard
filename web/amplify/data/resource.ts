@@ -308,12 +308,12 @@ const schema = a
       owner: a.string().required(), // Ownership field
 
       // Reference back to user - fixed reference
-      userId: a.id().required(), // Cognito user ID
+      userId: a.id(), // Cognito user ID
       user: a.belongsTo('User', 'userId'), // Reference to User
 
       // User Settings
-      theme: a.string(),
-      uiLayout: a.json(),
+      theme: a.string().default("light"), // Default theme
+      uiLayout: a.json().default({}), // Default UI layout
     })
     .secondaryIndexes((index) => [
       index("userId"), // Index on userId
