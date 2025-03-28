@@ -1,3 +1,4 @@
+// src/components/Header/HeaderSearchBar.tsx
 import React from "react";
 import { Autocomplete } from "@aws-amplify/ui-react";
 

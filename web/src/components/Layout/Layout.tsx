@@ -1,5 +1,6 @@
+// src/components/Layout/Layout.tsx
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useOutletContext } from "react-router-dom";
 import { baseConfig } from "../../config";
 import SideBar from "../SideBar";
 import Header from "../Header";
@@ -8,19 +9,17 @@ import "./Layout.css";
 
 export interface LayoutProps {
   children?: React.ReactNode;
+  signOut?: () => void; // Define proper type for signOut, make it optional with ?
 }
 
-const Layout = () => {
+const Layout = ({ signOut }: LayoutProps) => {
   return (
     <div className="layout-container">
-      {baseConfig.header ? <Header /> : <></>}
+      {baseConfig.header ? (signOut && <Header signOut={signOut} />) : <></>}
       <SideBar />
 
-      {/* An <Outlet> renders whatever child route is currently active,
-          so you can think about this <Outlet> as a placeholder for
-          the child routes we defined above. */}
       <div className="page-container">
-        <Outlet />
+        <Outlet context={{ signOut }} />
       </div>
       {baseConfig.footer ? <Footer /> : <></>}
     </div>

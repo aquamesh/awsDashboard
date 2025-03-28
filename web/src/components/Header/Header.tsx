@@ -1,3 +1,4 @@
+// src/components/Header/Header.tsx
 import React from "react";
 import "./Header.css";
 import { baseConfig } from "../../config";
@@ -8,7 +9,12 @@ import Logo from "../Logo";
 import HeaderNav from "./HeaderNav";
 import HeaderSearchBar from "./HeaderSearchBar";
 
-const Header = () => {
+// Add proper type for signOut
+interface HeaderProps {
+  signOut: () => void;
+}
+
+const Header = ({ signOut }: HeaderProps) => {
   return (
     <div className="header">
       <Flex
@@ -30,7 +36,7 @@ const Header = () => {
         <div className="header-right">
           {baseConfig.search ? <HeaderSearchBar /> : <></>}
 
-          <HeaderNav />
+          <HeaderNav signOut={signOut} />
         </div>
       </Flex>
     </div>

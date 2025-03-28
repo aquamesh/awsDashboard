@@ -13,9 +13,9 @@ import theme from "./theme";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/dashboard";
 import Deployments from "./pages/deployments";
-import Profile from "./pages/profile"; // Profile = Account/Settings
-import Sensors from "./pages/sensors"; // Sensors = Devices
-import SensorView from "./pages/sensors/SensorView"; // Import the SensorView component
+import Profile from "./pages/profile";
+import Sensors from "./pages/sensors";
+import SensorView from "./pages/sensors/SensorView";
 
 // Configure Amplify
 Amplify.configure(awsExports);
@@ -24,32 +24,25 @@ const App = () => {
   return (
     <Authenticator hideSignUp={false}>
       {({ signOut, user }) => (
-    <ThemeProvider theme={theme}>
-      <div>
-        {/* Routes nest inside one another. Nested route paths build upon
-            parent route paths, and nested route elements render inside
-            parent route elements. See the note about <Outlet> below. */}
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="deployments" element={<Deployments />} />
-            <Route path="account" element={<Profile />} />
-            <Route path="sensors" element={<Sensors />} />
-            <Route path="sensors/:sensorId" element={<SensorView />} />
-            {/*
-            <Route path="organization" element={<Organization />} />
-            <Route path="map" element={<Map />} />
-            */}
-            <Route path="*" element={<NoMatch />} />
-          </Route>
-        </Routes>
-      </div>
-    </ThemeProvider>
-    )}
+        <ThemeProvider theme={theme}>
+          <div>
+            <Routes>
+              {/* Pass signOut to Layout */}
+              <Route path="/" element={<Layout signOut={signOut} />}>
+                <Route index element={<Dashboard />} />
+                <Route path="deployments" element={<Deployments />} />
+                <Route path="account" element={<Profile />} />
+                <Route path="sensors" element={<Sensors />} />
+                <Route path="sensors/:sensorId" element={<SensorView />} />
+                <Route path="*" element={<NoMatch />} />
+              </Route>
+            </Routes>
+          </div>
+        </ThemeProvider>
+      )}
     </Authenticator>
   );
 };
-
 
 function NoMatch() {
   return (
