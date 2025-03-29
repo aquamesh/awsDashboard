@@ -1,12 +1,12 @@
 /* src/components/Layout/Layout.css */
 .layout-container {
-background-color: var(--amplify-colors-background-secondary);
+    background-color: var(--amplify-colors-background-secondary);
 }
 
 
 .page-container {
-    padding: 30px;
-    padding-left: 290px;
+    padding: 20px;
+    padding-left: 280px;
     padding-top: 50px;
     transition: padding 0.5s;
     overflow-x: hidden;
@@ -24,8 +24,5 @@ background-color: var(--amplify-colors-background-secondary);
 
 
 .card-title {
-font-weight: 600;
+    font-weight: 600;
 }
-
-    
-

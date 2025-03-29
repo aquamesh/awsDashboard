@@ -1,4 +1,4 @@
-// src/pages/profile/ProfileSettings.tsx
+// src/pages/profile/ProfileSettings.tsx - This file contains the ProfileSettings component for managing user profile settings.
 import React, { useState, useEffect } from "react";
 import { Text, SelectField, Button, Alert, Flex } from "@aws-amplify/ui-react";
 import { updateUserSettings, UserSettings } from "../../api/models/userApi";
@@ -9,10 +9,10 @@ interface ProfileSettingsProps {
   onSettingsUpdated: (settings: UserSettings | any) => void;
 }
 
-const ProfileSettings: React.FC<ProfileSettingsProps> = ({ 
-  userId, 
-  settings, 
-  onSettingsUpdated 
+const ProfileSettings: React.FC<ProfileSettingsProps> = ({
+  userId,
+  settings,
+  onSettingsUpdated
 }) => {
   const [theme, setTheme] = useState(settings?.theme || 'light');
   const [saveStatus, setSaveStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -35,18 +35,18 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
   // Save settings
   const handleSave = async () => {
     if (!userId) return;
-    
+
     setSaveStatus('loading');
     try {
       const updatedSettings = await updateUserSettings(userId, {
         theme
       });
-      
+
       if (updatedSettings) {
         onSettingsUpdated(updatedSettings);
         setSaveStatus('success');
         setHasChanges(false);
-        
+
         // Reset status after a delay
         setTimeout(() => {
           setSaveStatus('idle');
@@ -61,7 +61,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
   return (
     <div className="profile-card-content">
       <Text fontWeight="600" fontSize="18px" marginBottom="18px">
-        Profile Settings
+        Settings
       </Text>
 
       {saveStatus === 'success' && (
@@ -90,6 +90,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
         Appearance
       </Text>
 
+      {/* Theme selection */}
       <SelectField
         label="Theme"
         value={theme}
@@ -100,6 +101,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
         <option value="dark">Dark</option>
       </SelectField>
 
+      {/* Save button */}
       {hasChanges && (
         <Flex justifyContent="flex-end" marginTop="20px">
           <Button

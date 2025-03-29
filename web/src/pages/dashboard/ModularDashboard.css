@@ -1,18 +1,9 @@
-/* pages/dashboard/ModularDashboard.css - Css for Modular Grid */
+/* src/pages/dashboard/ModularDashboard.css - Css for Modular Grid */
 
 /* Dashboard container */
-.dashboard-container {
+/* .dashboard-container {
     padding: 0 16px;
-}
-
-/* Header styling */
-.page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding: 0 16px;
-}
+} */
 
 /* Custom styling for cards inside the dashboard */
 .dashboard-grid .grid-item > .amplify-card {

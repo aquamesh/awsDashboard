@@ -2,26 +2,35 @@
 import React, { useEffect, useState } from "react";
 import { View, Flex, useTheme, Loader } from "@aws-amplify/ui-react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
+import { AuthUser } from "aws-amplify/auth";
+
+// Importing components for the profile page
 import ProfileHeader from "./ProfileHeader";
 import ProfileInformation from "./ProfileInformation";
 import ProfileSettings from "./ProfileSettings";
 import DebugView, { DebugAction } from "../../components/DebugView/DebugView";
 import {
-  getUserAccount,
   UserAccount,
+  getUserAccount,
   getUserSettings,
   getAllUsers
 } from "../../api/models/userApi";
 import "./Profile.css";
 
-const Profile = () => {
+// Props for the Profile component
+interface ProfileProps {
+  user: AuthUser; // The user object from the Authenticator
+}
+
+// Profile component
+const Profile = ({ user }: ProfileProps) => {
   const { tokens } = useTheme();
-  const { user } = useAuthenticator();
   const [userProfile, setUserProfile] = useState<UserAccount | null>(null);
   const [userSettings, setUserSettings] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // The rest of the component remains largely the same
   useEffect(() => {
     const fetchUserData = async () => {
       if (user && user.username) {
@@ -67,7 +76,7 @@ const Profile = () => {
     return (
       <View padding="2rem" textAlign="center">
         <Loader size="large" />
-        <p>Loading profile data...</p>
+        <p>Loading account data...</p>
       </View>
     );
   }
@@ -75,7 +84,7 @@ const Profile = () => {
   if (error) {
     return (
       <View padding="2rem">
-        <h2>Profile</h2>
+        <h2>Account</h2>
         <div className="error-message">{error}</div>
       </View>
     );
@@ -94,7 +103,7 @@ const Profile = () => {
   return (
     <>
       <div>
-        <h2>Profile</h2>
+        <h2>Account</h2>
       </div>
       <div className="profile-container">
         {/* Header section */}
@@ -131,14 +140,12 @@ const Profile = () => {
 
         {/* Debug section */}
         {process.env.NODE_ENV === "development" && (
-          <div className="profile-card" style={{ marginTop: "20px" }}>
-            <DebugView
-              title="Debug Info"
-              initialData={userProfile}
-              initialDataLabel="Current User Profile"
-              actions={debugActions}
-            />
-          </div>
+          <DebugView
+            title="Debug Info"
+            initialData={userProfile}
+            initialDataLabel="Current User Profile"
+            actions={debugActions}
+          />
         )}
       </div>
     </>

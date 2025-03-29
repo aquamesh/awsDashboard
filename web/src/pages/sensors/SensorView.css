@@ -1,11 +1,4 @@
 /* src/pages/sensors/SensorView.css - CSS */
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding: 0 16px;
-}
 
 .back-button {
   display: flex;

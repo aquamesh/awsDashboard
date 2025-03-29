@@ -1,10 +1,4 @@
-.page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
+/* src/pages/deployments/Deployments.css - Deployments Styles */
 .create-btn {
     display: flex;
     align-items: center;

@@ -1,5 +1,5 @@
-// src/api/models/index.ts
+// src/api/models/index.ts - This file exports all API modules
 export * from './userApi';
-// Export other API modules as you create them
-// export * from './sensorApi';
-// export * from './organizationApi';
+export * from './jointApi';
+export * from './sensorApi';
+export * from './organizationApi';

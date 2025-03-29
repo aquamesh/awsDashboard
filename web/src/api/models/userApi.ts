@@ -3,28 +3,29 @@ import { client } from '../client';
 import type { SelectionSet } from 'aws-amplify/data';
 import type { Schema } from '../../../amplify/data/resource';
 
-// Define selection sets as constants for reuse
+// Define selection sets
 export const userAccountSelectionSet = [
   'id',
   'owner',
 
   'email',
   'phoneNumber',
+
   'firstName',
   'lastName',
   'profilePicture',
+  'preferences', // JSON string
+
+  'organizations.*',
+
+  'userSetupStage',
+  'settings.*',
+
+  // Metadata fields
   'lastLogin',
-  'preferences',
   'createdAt',
   'updatedAt',
-  'settings.*',
-  'organizations.*',
-  // 'organizations.role',
-  // 'organizations.joinedAt'
 ] as const;
-
-// TODO: Define selection set for user organizations
-
 
 // Define selection set for user settings
 export const userSettingsSelectionSet = [
@@ -59,7 +60,7 @@ export async function getUserAccount(userId: string): Promise<UserAccount | null
   }
 }
 
-// Fetch all users we can see
+// Fetch all users
 export async function getAllUsers(): Promise<UserAccount[] | null> {
   try {
     // Fetch all users we have permission to access using the User table and list operation

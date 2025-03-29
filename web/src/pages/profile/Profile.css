@@ -1,4 +1,4 @@
-/* src/pages/profile/Profile.css */
+/* src/pages/profile/Profile.css -  */
 /* Profile header styles */
 .profile-header-image {
     width: 66px;
@@ -31,7 +31,8 @@
 
 .profile-header-card {
     background-color: var(--amplify-colors-white);
-    border-radius: 6px;
+    border-radius: 15px;
+    height: 100%;
     padding: 1rem;
     width: 100%;
 }
@@ -45,7 +46,7 @@
 .profile-card {
     flex: 1;
     background-color: var(--amplify-colors-white);
-    border-radius: 6px;
+    border-radius: 15px;
     padding: 1.5rem;
 }
 

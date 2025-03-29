@@ -71,7 +71,7 @@ const schema = a
       createdAt: a.datetime(),
       updatedAt: a.datetime(),
     }).authorization((allow) => [
-      // TODO: Add organization-specific access control (custom authorizer)
+      // TODO: Add organization-specific access control (custom authorizer), for now all authenticated users can access organizations
       allow.authenticated(),
       // Global admins can access all orgs
       allow.group("GlobalAdmin"),
@@ -138,7 +138,7 @@ const schema = a
       allow.group("GlobalAdmin"),
     ]),
 
-    // Modified Sensor model (now owned by an Organization)
+    // Sensor Model (owned by an Organization)
     Sensor: a.model({
       id: a.id().required(),
       serialNumber: a.string().required(),
@@ -180,22 +180,20 @@ const schema = a
       allow.group('GlobalAdmin'),
     ]),
 
-    // Parameter values (kept from original)
+    // Parameter value data
     ParameterValue: a.model({
-      id: a.id(),
-      sensorId: a.string().required(),
-      timestamp: a.datetime().required(),
+      sensorId: a.string().required(), // Reference to the sensor this parameter value is associated with
+      timestamp: a.datetime().required(), // Timestamp of the measurement
+      status: a.integer().required(), // Sensor measurement status
 
-      // Dynamic parameter data (flexible based on sensor's LED configuration)
-      parameterName: a.string().required(), // e.g., "pH", "temperature", "salinity", "disolvedO2"
-      value: a.float().required(),
-      unit: a.string().required(), // e.g., "mg/L", "°C"
-      confidence: a.float(), // Confidence level (0-1)
+      // Dynamic parameter data
+      parameterName: a.string().required(), // e.g., "pH", "temperature", "salinity", "disolvedO2", "turbidityFNU", "turbidityNTU", "fluorescence", etc.
+      value: a.float().required(), // Measured value of the parameter
+      unit: a.string().required(), // e.g., "mg/L", "ug/L", "ppm", "ppb", "degC", "degF", "FNU", "NTU", "RFU", etc.
+      confidence: a.float(), // Confidence level (0.0 to 1.0)
 
-      // Status and metadata
-      status: a.integer().required(), // 0=invalid, 1=valid, 2=warning, etc.
-      calibrationId: a.string(), // Reference to calibration used
-      metadata: a.json(), // Any additional metadata
+      // Any additional metadata
+      metadata: a.json(),
 
       // Add organizationId for access control
       organizationId: a.string().required(),
@@ -211,7 +209,6 @@ const schema = a
 
     // Spectrogram readings (kept from original)
     SpectrogramReading: a.model({
-      id: a.id(),
       sensorId: a.string().required(),
       timestamp: a.datetime().required(),
 
@@ -273,9 +270,8 @@ const schema = a
       allow.group('GlobalAdmin'),
     ]),
 
-    // Sensor alert model (kept from original)
+    // Sensor alert model
     SensorAlert: a.model({
-      id: a.id(),
       sensorId: a.string().required(),
       type: a.string().required(), // e.g., "battery-low", "reading-out-of-range"
       severity: a.integer().required(), // 1=info, 2=warning, 3=critical
@@ -288,7 +284,7 @@ const schema = a
       // Add organizationId for access control
       organizationId: a.string().required(),
 
-      // Relationship back to sensor - fixed reference
+      // Many to One Relationship back to sensor - fixed reference
       sensor: a.belongsTo('Sensor', 'sensorId'),
     }).authorization((allow) => [
       // TODO: Add organization-specific access control (custom authorizer)

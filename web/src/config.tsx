@@ -1,5 +1,4 @@
 // src/config.tsx - Configuration file for the AquaView web application
-import React from "react";
 import { Icon } from "@aws-amplify/ui-react";
 
 import {
@@ -14,15 +13,11 @@ import {
 const baseUrl = import.meta.env.BASE_URL;
 
 export const baseConfig = {
-  projectLink: "/", // GitHub link in the navbar
-  docsRepositoryBase: "", // base URL for the docs repository
   titleSuffix: "",
   search: true,
   header: true,
   headerText: "AquaView",
   footer: true,
-  // The detailed footer implementation has been moved to the Footer component
-
   logo: (
     <>
       <img

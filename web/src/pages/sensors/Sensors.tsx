@@ -1,4 +1,4 @@
-// Sensors.tsx
+// src/pages/sensors/Sensors.tsx - Updated to use real sensor API
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -17,117 +17,11 @@ import {
 } from "@aws-amplify/ui-react";
 import { MdAdd } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { getAllSensors } from "../../api/models/sensorApi";
+import type { Sensor } from "../../api/models/sensorApi";
+import DebugView, { DebugAction } from "../../components/DebugView/DebugView";
 
 import "./Sensors.css";
-
-// Types for our sensor data
-interface Sensor {
-  id: string;
-  name: string;
-  location: string;
-  type: string;
-  status: string;
-  lastUpdate: string;
-  deploymentId?: string; // Optional deployment ID
-}
-
-// Mock deployment data
-interface Deployment {
-  id: string;
-  name: string;
-}
-
-// Mock deployments list
-const mockDeployments: Deployment[] = [
-  { id: "dep-001", name: "Downtown Network" },
-  { id: "dep-002", name: "Harbor Monitoring" },
-  { id: "dep-003", name: "River Quality" },
-  { id: "dep-004", name: "Marina Network" },
-];
-
-// Mock function to get deployment name from ID
-const getDeploymentName = (deploymentId?: string): string => {
-  if (!deploymentId) return "Not Assigned";
-  
-  const deployment = mockDeployments.find(dep => dep.id === deploymentId);
-  return deployment ? deployment.name : "Unknown Deployment";
-};
-
-// Mock API function to get sensors
-const getSensors = (): Promise<Sensor[]> => {
-  return new Promise((resolve) => {
-    // Simulating API delay
-    setTimeout(() => {
-      const mockSensors: Sensor[] = [
-        {
-          id: "sensor-001",
-          name: "Bay Monitor A1",
-          location: "San Francisco Bay, North",
-          type: "WATER_QUALITY_SENSOR",
-          status: "Normal",
-          lastUpdate: "2025-03-21T14:32:00",
-          deploymentId: "dep-002" // Harbor Monitoring
-        },
-        {
-          id: "sensor-002",
-          name: "Bay Monitor A2",
-          location: "San Francisco Bay, East",
-          type: "WATER_QUALITY_SENSOR",
-          status: "Warning",
-          lastUpdate: "2025-03-22T09:15:00",
-          deploymentId: "dep-002" // Harbor Monitoring
-        },
-        {
-          id: "sensor-003",
-          name: "Harbor Monitor B1",
-          location: "Oakland Harbor",
-          type: "WATER_QUALITY_SENSOR",
-          status: "Normal",
-          lastUpdate: "2025-03-20T16:45:00",
-          deploymentId: "dep-002" // Harbor Monitoring
-        },
-        {
-          id: "sensor-004",
-          name: "River Inlet C1",
-          location: "Sacramento River Delta",
-          type: "WATER_QUALITY_SENSOR",
-          status: "Critical",
-          lastUpdate: "2025-03-21T11:23:00",
-          deploymentId: "dep-003" // River Quality
-        },
-        {
-          id: "sensor-005",
-          name: "Marina Monitor D1",
-          location: "Berkeley Marina",
-          type: "WATER_QUALITY_SENSOR",
-          status: "Normal",
-          lastUpdate: "2025-03-22T08:05:00",
-          deploymentId: "dep-004" // Marina Network
-        },
-        {
-          id: "sensor-006",
-          name: "Coastal Monitor E1",
-          location: "Golden Gate",
-          type: "WATER_QUALITY_SENSOR",
-          status: "Warning",
-          lastUpdate: "2025-03-21T13:40:00",
-          deploymentId: "dep-003" // River Quality
-        },
-        {
-          id: "sensor-007",
-          name: "Industrial Zone F1",
-          location: "Richmond Harbor",
-          type: "WATER_QUALITY_SENSOR",
-          status: "Normal",
-          lastUpdate: "2025-03-22T17:28:00"
-          // No deploymentId - not assigned to any deployment
-        },
-      ];
-      
-      resolve(mockSensors);
-    }, 800);
-  });
-};
 
 // Format the datetime to a more readable format
 const formatDate = (dateString: string): string => {
@@ -141,7 +35,7 @@ const formatDate = (dateString: string): string => {
   }).format(date);
 };
 
-const Sensors: React.FC = () => {
+const SensorsPage: React.FC = () => {
   const [sensors, setSensors] = useState<Sensor[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const { tokens } = useTheme();
@@ -149,7 +43,7 @@ const Sensors: React.FC = () => {
   useEffect(() => {
     const fetchSensors = async () => {
       try {
-        const data = await getSensors();
+        const data = await getAllSensors();
         setSensors(data);
       } catch (error) {
         console.error("Error fetching sensors:", error);
@@ -168,17 +62,147 @@ const Sensors: React.FC = () => {
 
   // Helper function to get status color
   const getStatusColor = (status: string): string => {
-    switch (status.toLowerCase()) {
-      case 'normal':
+    switch (status.toLowerCase?.() || status) {
+      case 'active':
         return 'green';
       case 'warning':
+      case 'maintenance':
         return '#FFA500'; // Orange
-      case 'critical':
+      case 'inactive':
+      case 'error':
         return 'red';
       default:
         return 'black';
     }
   };
+
+  // Render the sensor table or empty state
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <Flex direction="column" minHeight="285px">
+          <Placeholder size="small" />
+          <Placeholder size="small" />
+          <Placeholder size="small" />
+          <Placeholder size="small" />
+        </Flex>
+      );
+    }
+
+    if (!sensors || sensors.length === 0) {
+      return (
+        <Flex
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
+          padding="2rem"
+          minHeight="200px"
+          gap="1rem"
+        >
+          <Text fontSize="1.2rem" fontWeight="500">
+            No sensors found
+          </Text>
+          <Text color="grey" marginBottom="1rem">
+            Add your first sensor to get started with monitoring
+          </Text>
+          <Button
+            onClick={handleCreateSensor}
+            // variation="primary"
+          >
+            <Flex alignItems="center" gap="0.5rem">
+              <MdAdd size={20} />
+              <Text>Add Sensor</Text>
+            </Flex>
+          </Button>
+        </Flex>
+      );
+    }
+
+    return (
+      <Table highlightOnHover={true}>
+        <TableHead>
+          <TableRow>
+            <TableCell as="th">Name</TableCell>
+            <TableCell as="th">Location</TableCell>
+            <TableCell as="th">Status</TableCell>
+            <TableCell as="th">Battery Level</TableCell>
+            <TableCell as="th">Firmware</TableCell>
+            <TableCell as="th">Organization</TableCell>
+            <TableCell as="th">Last Updated</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {sensors.map((sensor) => (
+            <TableRow key={sensor.id}>
+              <TableCell>
+                <Link 
+                  to={`/sensors/${sensor.id}`}
+                  className="sensor-link"
+                >
+                  {sensor.name}
+                </Link>
+              </TableCell>
+              <TableCell>{sensor.locationName || (sensor.latitude && sensor.longitude ? `${sensor.latitude}, ${sensor.longitude}` : "Unknown location")}</TableCell>
+              <TableCell>
+                <span style={{ color: getStatusColor(typeof sensor.status === 'string' ? sensor.status : String(sensor.status)) }}>
+                  {typeof sensor.status === 'string' ? sensor.status : String(sensor.status)}
+                </span>
+              </TableCell>
+              <TableCell>{sensor.batteryLevel ? `${sensor.batteryLevel}%` : "Unknown"}</TableCell>
+              <TableCell>{sensor.firmwareVersion}</TableCell>
+              <TableCell>
+                {sensor.organizations && sensor.organizations.length > 0 
+                  ? (sensor.organizations[0] as any).name || "Unknown Name"
+                  : "Not Assigned"}
+              </TableCell>
+              <TableCell>{sensor.lastUpdated ? formatDate(sensor.lastUpdated) : "Not available"}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    );
+  };
+
+  // Define debug actions
+  const debugActions: DebugAction[] = [
+    {
+      label: "Fetch Sensors",
+      action: async () => {
+        const data = await getAllSensors();
+        // Update the component state as well
+        setSensors(data);
+        setLoading(false);
+        return data;
+      },
+      resultLabel: "Sensor API Result",
+    },
+    {
+      label: "Add Test Sensor",
+      action: async () => {
+        // This is just a placeholder that returns a mock sensor object
+        // The actual implementation would call an API to create a sensor
+        const mockSensor = {
+          id: `sensor-test-${Date.now()}`,
+          name: "Test Sensor",
+          serialNumber: `SN-TEST-${Math.floor(Math.random() * 10000)}`,
+          status: "active",
+          batteryLevel: 98,
+          firmwareVersion: "1.0.0",
+          locationName: "Test Location",
+          latitude: 37.7749,
+          longitude: -122.4194,
+          createdAt: new Date().toISOString(),
+          lastUpdated: new Date().toISOString(),
+        };
+        
+        // Log the mock sensor so you can see it in the console too
+        console.log('Would create sensor:', mockSensor);
+        
+        return mockSensor;
+      },
+      resultLabel: "Test Sensor (Not Added)",
+    },
+  ];
 
   return (
     <>
@@ -199,61 +223,24 @@ const Sensors: React.FC = () => {
         borderRadius="6px" 
         maxWidth="100%" 
         padding="0rem" 
-        minHeight="calc(100vh - 120px)"
       >
         <Card borderRadius="15px">
-        <h3 style={{ marginTop: 0 }}>All Sensors</h3>
-          
-          {loading ? (
-            <Flex direction="column" minHeight="285px">
-              <Placeholder size="small" />
-              <Placeholder size="small" />
-              <Placeholder size="small" />
-              <Placeholder size="small" />
-            </Flex>
-          ) : (
-            <Table highlightOnHover={true}>
-              <TableHead>
-                <TableRow>
-                  <TableCell as="th">Name</TableCell>
-                  <TableCell as="th">Location</TableCell>
-                  <TableCell as="th">Type</TableCell>
-                  <TableCell as="th">Status</TableCell>
-                  <TableCell as="th">Deployment</TableCell>
-                  <TableCell as="th">Last Updated</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {sensors?.map((sensor) => (
-                  <TableRow key={sensor.id}>
-                    <TableCell>
-                      <Link 
-                        to={`/sensors/${sensor.id}`}
-                        className="sensor-link"
-                      >
-                        {sensor.name}
-                      </Link>
-                    </TableCell>
-                    <TableCell>{sensor.location}</TableCell>
-                    <TableCell>{sensor.type}</TableCell>
-                    <TableCell>
-                      <span style={{ color: getStatusColor(sensor.status) }}>
-                        {sensor.status}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      {getDeploymentName(sensor.deploymentId)}
-                    </TableCell>
-                    <TableCell>{formatDate(sensor.lastUpdate)}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
+          <h3 style={{ marginTop: 0 }}>All Sensors</h3>
+          {renderContent()}
         </Card>
       </View>
+      
+      {/* Debug View - Only visible in development */}
+      {process.env.NODE_ENV === 'development' && (
+        <DebugView
+          title="Sensor API Debug Tools"
+          initialData={sensors}
+          initialDataLabel="Current Sensors"
+          actions={debugActions}
+        />
+      )}
     </>
   );
 };
 
-export default Sensors;
+export default SensorsPage;

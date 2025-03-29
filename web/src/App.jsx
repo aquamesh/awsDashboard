@@ -8,7 +8,7 @@ import "@aws-amplify/ui-react/styles.css";
 import "./App.css";
 
 import awsExports from "../amplify_outputs.json";
-import theme from "./theme";
+import { lightTheme, darkTheme } from "./theme";
 
 import Layout from "./components/Layout";
 import Dashboard from "./pages/dashboard";
@@ -24,16 +24,26 @@ const App = () => {
   return (
     <Authenticator hideSignUp={false}>
       {({ signOut, user }) => (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={lightTheme}>
           <div>
             <Routes>
-              {/* Pass signOut to Layout */}
               <Route path="/" element={<Layout signOut={signOut} />}>
+                {/* Default route to redirect to the dashboard */}
                 <Route index element={<Dashboard />} />
+
+                {/* Nested Routes for Deployments */}
                 <Route path="deployments" element={<Deployments />} />
-                <Route path="account" element={<Profile />} />
+
+                {/* Nested Routes for Sensors */}
                 <Route path="sensors" element={<Sensors />} />
                 <Route path="sensors/:sensorId" element={<SensorView />} />
+
+                {/* Nested Routes for Organizations */}
+
+                {/* Account Routes */}
+                <Route path="account" element={<Profile user={user} />} />
+
+                {/* Catch-all route for 404 Not Found */}
                 <Route path="*" element={<NoMatch />} />
               </Route>
             </Routes>
