@@ -1,0 +1,24 @@
+/* src/pages/admin/AdminOrganizations.css */
+/* .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+} */
+
+/* .create-btn {
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+} */
+
+.organization-link {
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.organization-link:hover {
+    text-decoration: underline;
+}

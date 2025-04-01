@@ -4,27 +4,59 @@ import type { SelectionSet } from 'aws-amplify/data';
 import type { Schema } from '../../../amplify/data/resource';
 
 
-// Define selection sets
+// Define selection sets:
+// Basic set should be what we need to display the list of organizations and their basic details
 export const organizationBasicSelectionSet = [
     'id',
     'name',
+    'description',
     'logo',
+    'industry',
+    'size',
+    'website',
+    'createdAt',
+    'updatedAt',
 ] as const;
 
+// This set should include all the details we need to display a single organization and its members
 export const organizationWithMembersSelectionSet = [
     'id',
     'name',
+    'description',
+    'logo',
+    'industry',
+    'size',
+    'website',
+    'address',
+    'city',
+    'state',
+    'zipCode',
+    'country',
+    'createdAt',
+    'updatedAt',
     'members.user.id',
     'members.user.email',
+    'members.user.firstName',
+    'members.user.lastName',
     'members.role'
 ] as const;
 
+// This set should include all the details we need to display a single organization with its sensors
 export const organizationWithSensorsSelectionSet = [
     'id',
     'name',
+    'description',
+    'logo',
+    'industry',
+    'size',
+    'website',
+    'createdAt',
+    'updatedAt',
     'sensors.sensor.id',
     'sensors.sensor.name',
-    'sensors.sensor.status'
+    'sensors.sensor.status',
+    'sensors.sensor.enabled',
+    'sensors.sensor.locationName'
 ] as const;
 
 // Fetch all organizations we have permission to access
@@ -111,4 +143,3 @@ export async function createOrganization(
         throw error;
     }
 }
-

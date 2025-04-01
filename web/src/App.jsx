@@ -8,7 +8,7 @@ import "@aws-amplify/ui-react/styles.css";
 import "./App.css";
 
 import awsExports from "../amplify_outputs.json";
-import { lightTheme } from "./theme";
+import { lightTheme, darkTheme } from "./theme";
 
 import LayoutWrapper from "./components/Layout/LayoutWrapper";
 import Dashboard from "./pages/dashboard";
@@ -19,6 +19,8 @@ import SensorView from "./pages/sensors/SensorView";
 import ProfileCompletion from "./pages/profile-completion";
 import NoMatch from "./components/feedback/NoMatch";
 
+// Admin components
+import AdminOrganizations from "./pages/admin/AdminOrganizations";
 // import AdminDashboard from "./pages/admin"; // Create this component
 // import AdminUsers from "./pages/admin/users"; // Create this component
 // import AdminSettings from "./pages/admin/settings"; // Create this component
@@ -39,6 +41,7 @@ const App = () => (
             <Route path="account" element={<Profile user={user} />} />
             
             {/* Admin Routes */}
+            <Route path="admin/organizations" element={<AdminOrganizations />} />
             {/* <Route path="admin" element={<AdminDashboard />} />
             <Route path="admin/users" element={<AdminUsers />} />
             <Route path="admin/settings" element={<AdminSettings />} /> */}
