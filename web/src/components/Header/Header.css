@@ -26,10 +26,15 @@
 .header-avatar {
     width: 34px;
     height: 34px;
-    font-size: 14px;
+    font-size: 0; /* Remove unwanted inline spacing */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 50%;
     overflow: hidden;
+    background-color: transparent;
 }
+
 
 .header-avatar img {
     width: 34px;
@@ -60,3 +65,4 @@
 .header-search-bar {
     padding: 7px 15px;
 }
+

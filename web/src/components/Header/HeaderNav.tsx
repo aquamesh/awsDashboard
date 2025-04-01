@@ -2,10 +2,9 @@
 import React from "react";
 import { Menu, MenuItem, MenuButton, Link } from "@aws-amplify/ui-react";
 import { useNavigate } from "react-router-dom";
-import { AiFillGithub } from "react-icons/ai";
+import { MdAccountCircle } from "react-icons/md";
 import { baseConfig } from "../../config";
 
-// Add proper type for signOut
 interface HeaderNavProps {
   signOut: () => void;
 }
@@ -19,7 +18,9 @@ const HeaderNav = ({ signOut }: HeaderNavProps) => {
         trigger={
           <MenuButton variation="menu">
             <div className="header-avatar">
-              <img alt="avatar" src="https://placehold.co/512x512/png"></img>
+              <div style={{ fontSize: "34px", lineHeight: 1, color: "#000" }}>
+                <MdAccountCircle />
+              </div>
             </div>
           </MenuButton>
         }

@@ -35,7 +35,6 @@ const Header = ({ signOut }: HeaderProps) => {
 
         <div className="header-right">
           {baseConfig.search ? <HeaderSearchBar /> : <></>}
-
           <HeaderNav signOut={signOut} />
         </div>
       </Flex>
