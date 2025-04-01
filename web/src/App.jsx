@@ -22,6 +22,7 @@ import NoMatch from "./components/feedback/NoMatch";
 // Admin components
 import AdminOrganizations from "./pages/admin/AdminOrganizations";
 import CreateOrganization from "./pages/admin/CreateOrganization";
+import AdminOrganizationView from "./pages/admin/AdminOrganizationView";
 // import AdminDashboard from "./pages/admin"; // Create this component
 // import AdminUsers from "./pages/admin/users"; // Create this component
 // import AdminSettings from "./pages/admin/settings"; // Create this component
@@ -44,6 +45,7 @@ const App = () => (
             {/* Admin Routes */}
             <Route path="admin/organizations" element={<AdminOrganizations />} />
             <Route path="admin/organizations/create" element={<CreateOrganization />} />
+            <Route path="admin/organizations/:organizationId" element={<AdminOrganizationView />} />
             {/* <Route path="admin" element={<AdminDashboard />} />
             <Route path="admin/users" element={<AdminUsers />} />
             <Route path="admin/settings" element={<AdminSettings />} /> */}
