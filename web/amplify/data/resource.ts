@@ -41,6 +41,7 @@ const schema = a
       // User Settings (one-to-one relationship)
       userSetupStage: a.string().required().default("INITIAL"), // User setup stage (INITIAL, BASIC_INFO, ORGANIZATION_SELECTION, COMPLETE)
       settings: a.hasOne('UserSettings', 'userId'),
+      globalAdmin: a.boolean().required().default(false), // Global admin flag
 
       // Timestamps
       lastLogin: a.datetime(),
