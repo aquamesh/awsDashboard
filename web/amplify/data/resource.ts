@@ -21,21 +21,25 @@ const schema = a
     User: a.model({
       id: a.id().required(), // Cognito user sub - fixed reference
       owner: a.string().required(), // Cognito user ownership
-      
+
       email: a.string().required(), // Cognito email
       phoneNumber: a.string(), // Cognito phone number
-      
+
+      profilePicture: a.string(), // URL to profile picture (stored in aplify storage)
+
       // User attributes
       firstName: a.string(),
       lastName: a.string(),
-      profilePicture: a.string(),
-      preferences: a.json(),
+      industry: a.string(),
+      jobTitle: a.string(),
+      bio: a.string(),
+      location: a.string(),
 
       // Relationships - fixed reference field name
       organizations: a.hasMany('UserOrganization', 'userId'),
 
       // User Settings (one-to-one relationship)
-      userSetupStage: a.integer().required().default(0), // 0=not set up, 1=setup in progress, 2=setup complete
+      userSetupStage: a.string().required().default("INITIAL"), // User setup stage (INITIAL, BASIC_INFO, ORGANIZATION_SELECTION, COMPLETE)
       settings: a.hasOne('UserSettings', 'userId'),
 
       // Timestamps
@@ -98,18 +102,18 @@ const schema = a
       createdAt: a.datetime(),
       updatedAt: a.datetime(),
     })
-    .secondaryIndexes((index) => [
-      index("userId"), // Index for userId
-      index("organizationId"), // Index for organizationId
-      // TODO: Index for both userId and organizationId
-    ])
-    .authorization((allow) => [
-      // TODO: Add organization/user-specific access control (custom authorizer), for now allow unrestricted access
-      allow.authenticated(),
-      // Global admins can manage all memberships
-      allow.group("GlobalAdmin"),
-      
-    ]),
+      .secondaryIndexes((index) => [
+        index("userId"), // Index for userId
+        index("organizationId"), // Index for organizationId
+        // TODO: Index for both userId and organizationId
+      ])
+      .authorization((allow) => [
+        // TODO: Add organization/user-specific access control (custom authorizer), for now allow unrestricted access
+        allow.authenticated(),
+        // Global admins can manage all memberships
+        allow.group("GlobalAdmin"),
+
+      ]),
 
 
     // SensorOrganization model - many to many relationship between Sensor and Organization
@@ -127,16 +131,16 @@ const schema = a
       updatedAt: a.datetime(),
 
     })
-    .secondaryIndexes((index) => [
-      index("sensorId"), // Index for sensorId
-      index("organizationId"), // Index for organizationId
-    ])
-    .authorization((allow) => [
-      // TODO: Add organization-specific access control (custom authorizer)
-      allow.authenticated(),
-      // Global admins can access all sensor organizations
-      allow.group("GlobalAdmin"),
-    ]),
+      .secondaryIndexes((index) => [
+        index("sensorId"), // Index for sensorId
+        index("organizationId"), // Index for organizationId
+      ])
+      .authorization((allow) => [
+        // TODO: Add organization-specific access control (custom authorizer)
+        allow.authenticated(),
+        // Global admins can access all sensor organizations
+        allow.group("GlobalAdmin"),
+      ]),
 
     // Sensor Model (owned by an Organization)
     Sensor: a.model({
@@ -311,13 +315,13 @@ const schema = a
       theme: a.string(),
       uiLayout: a.json(),
     })
-    .secondaryIndexes((index) => [
-      index("userId"), // Index on userId
-    ])
-    .authorization((allow) => [
-      allow.owner(), // User can access their own settings
-      allow.group("GlobalAdmin") // Global admins can manage all user settings
-    ]),
+      .secondaryIndexes((index) => [
+        index("userId"), // Index on userId
+      ])
+      .authorization((allow) => [
+        allow.owner(), // User can access their own settings
+        allow.group("GlobalAdmin") // Global admins can manage all user settings
+      ]),
 
     // Queries and mutations
     // listIotCoreDevices: a

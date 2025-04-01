@@ -24,10 +24,10 @@ export const handler: PostConfirmationTriggerHandler = async (event) => {
 
     // Info from Cognito
     email: event.request.userAttributes.email,
+    // phoneNumber: event.request.userAttributes.phone_number,
 
-    // Optional attributes
-    userSetupStage: 0, // 0 = not set up
-
+    userSetupStage: "INITIAL", // Set the initial setup stage
+    
     // Timestamp attributes
     lastLogin: new Date().toISOString(),
     createdAt: new Date().toISOString(),
