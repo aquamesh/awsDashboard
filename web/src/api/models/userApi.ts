@@ -10,11 +10,14 @@ export const userAccountSelectionSet = [
 
   'email',
   'phoneNumber',
+  'profilePicture',
 
   'firstName',
   'lastName',
-  'profilePicture',
-  'preferences', // JSON string
+  'industry',
+  'jobTitle',
+  'location',
+  'bio',
 
   'organizations.*',
 
@@ -42,7 +45,7 @@ export type UserAccount = SelectionSet<Schema['User']['type'], typeof userAccoun
 export type UserSettings = SelectionSet<Schema['UserSettings']['type'], typeof userSettingsSelectionSet>;
 
 // Fetch user profile data
-export async function getUserAccount(userId: string): Promise<UserAccount | null> {
+export async function getUserById(userId: string): Promise<UserAccount | null> {
   try {
     const { data, errors } = await client.models.User.get(
       { id: userId },

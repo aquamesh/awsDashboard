@@ -11,7 +11,7 @@ import ProfileSettings from "./ProfileSettings";
 import DebugView, { DebugAction } from "../../components/DebugView/DebugView";
 import {
   UserAccount,
-  getUserAccount,
+  getUserById,
   getUserSettings,
   getAllUsers
 } from "../../api/models/userApi";
@@ -38,7 +38,7 @@ const Profile = ({ user }: ProfileProps) => {
           setLoading(true);
 
           // Fetch user profile data
-          const profileData = await getUserAccount(user.userId);
+          const profileData = await getUserById(user.userId);
           setUserProfile(profileData);
 
           // Fetch user settings
