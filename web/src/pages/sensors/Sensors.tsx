@@ -103,17 +103,16 @@ const SensorsPage: React.FC = () => {
             No sensors found
           </Text>
           <Text color="grey" marginBottom="1rem">
-            Add your first sensor to get started with monitoring
+            Provision a sensor via the Android or iOS app to get started.
           </Text>
-          <Button
+          {/* <Button
             onClick={handleCreateSensor}
-            // variation="primary"
           >
             <Flex alignItems="center" gap="0.5rem">
               <MdAdd size={20} />
               <Text>Add Sensor</Text>
             </Flex>
-          </Button>
+          </Button> */}
         </Flex>
       );
     }
@@ -208,7 +207,7 @@ const SensorsPage: React.FC = () => {
     <>
       <div className="page-header">
         <Heading level={2}>Sensors</Heading>
-        <Button 
+        {/* <Button 
           onClick={handleCreateSensor}
           className="create-btn"
         >
@@ -216,7 +215,7 @@ const SensorsPage: React.FC = () => {
             <MdAdd size={20} color="black" />
             <Text>Add Sensor</Text>
           </Flex>
-        </Button>
+        </Button> */}
       </div>
 
       <View 
