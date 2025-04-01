@@ -4,7 +4,7 @@ import type { SelectionSet } from 'aws-amplify/data';
 import type { Schema } from '../../../amplify/data/resource';
 
 
-// Define selection sets:
+// Define selection sets
 // Basic set should be what we need to display the list of organizations and their basic details
 export const organizationBasicSelectionSet = [
     'id',
@@ -101,6 +101,28 @@ export async function getOrganizationBasicById(
         return data;
     } catch (error) {
         console.error('Exception when fetching organization info:', error);
+        throw error;
+    }
+}
+
+// Fetch organization by ID with members
+export async function getOrganizationWithMembersById(
+    organizationId: string,
+): Promise<SelectionSet<Schema['Organization']['type'], typeof organizationWithMembersSelectionSet> | null> {
+    try {
+        const { data, errors } = await client.models.Organization.get(
+            { id: organizationId },
+            { selectionSet: organizationWithMembersSelectionSet }
+        );
+
+        if (errors) {
+            console.error('Error fetching organization with members:', errors);
+            return null;
+        }
+
+        return data;
+    } catch (error) {
+        console.error('Exception when fetching organization with members:', error);
         throw error;
     }
 }
