@@ -39,7 +39,7 @@ const schema = a
       organizations: a.hasMany('UserOrganization', 'userId'),
 
       // User Settings (one-to-one relationship)
-      userSetupStage: a.string().required().default("INITIAL"), // User setup stage (INITIAL, BASIC_INFO, ORGANIZATION_SELECTION, COMPLETE)
+      userSetupStage: a.string().required().default("INITIAL"), // User setup stage (INITIAL, etc, COMPLETE)
       settings: a.hasOne('UserSettings', 'userId'),
       globalAdmin: a.boolean().required().default(false), // Global admin flag
 
@@ -50,7 +50,7 @@ const schema = a
 
     }).authorization((allow) => [
       allow.owner(), // User can access their own settings
-      allow.group("GlobalAdmin") // Global admins can manage all users
+      allow.group("GLOBAL_ADMIN") // Global admins can manage all users
     ]),
 
     // Organization model
@@ -79,7 +79,7 @@ const schema = a
       // TODO: Add organization-specific access control (custom authorizer), for now all authenticated users can access organizations
       allow.authenticated(),
       // Global admins can access all orgs
-      allow.group("GlobalAdmin"),
+      allow.group("GLOBAL_ADMIN"),
     ]),
 
     // Join table for User-Organization many-to-many relationship with role information
@@ -112,8 +112,7 @@ const schema = a
         // TODO: Add organization/user-specific access control (custom authorizer), for now allow unrestricted access
         allow.authenticated(),
         // Global admins can manage all memberships
-        allow.group("GlobalAdmin"),
-
+        allow.group("GLOBAL_ADMIN"),
       ]),
 
 
@@ -140,7 +139,7 @@ const schema = a
         // TODO: Add organization-specific access control (custom authorizer)
         allow.authenticated(),
         // Global admins can access all sensor organizations
-        allow.group("GlobalAdmin"),
+        allow.group("GLOBAL_ADMIN"),
       ]),
 
     // Sensor Model (owned by an Organization)
@@ -182,7 +181,7 @@ const schema = a
       // TODO: Add organization-specific access control (custom authorizer)
       allow.authenticated(),
       // Global admins can access all sensors
-      allow.group('GlobalAdmin'),
+      allow.group('GLOBAL_ADMIN'),
     ]),
 
     // Parameter value data
@@ -209,7 +208,7 @@ const schema = a
       // TODO: Add organization-specific access control (custom authorizer)
       allow.authenticated(),
       // Global admins can access all parameter values
-      allow.group('GlobalAdmin'),
+      allow.group('GLOBAL_ADMIN'),
     ]),
 
     // Spectrogram readings (kept from original)
@@ -243,7 +242,7 @@ const schema = a
       // TODO: Add organization-specific access control (custom authorizer)
       allow.authenticated(),
       // Global admins can access all spectrogram readings
-      allow.group('GlobalAdmin'),
+      allow.group('GLOBAL_ADMIN'),
     ]),
 
     // Other existing models (kept from original)
@@ -272,7 +271,7 @@ const schema = a
       // TODO: Add organization-specific access control (custom authorizer)
       allow.authenticated(),
       // Global admins can manage all parameter configs
-      allow.group('GlobalAdmin'),
+      allow.group('GLOBAL_ADMIN'),
     ]),
 
     // Sensor alert model
@@ -295,7 +294,7 @@ const schema = a
       // TODO: Add organization-specific access control (custom authorizer)
       allow.authenticated(),
       // Global admins can access all alerts
-      allow.group('GlobalAdmin'),
+      allow.group('GLOBAL_ADMIN'),
     ]),
 
     // Keep the existing custom types
@@ -321,7 +320,7 @@ const schema = a
       ])
       .authorization((allow) => [
         allow.owner(), // User can access their own settings
-        allow.group("GlobalAdmin") // Global admins can manage all user settings
+        allow.group("GLOBAL_ADMIN") // Global admins can manage all user settings
       ]),
 
     // Queries and mutations
@@ -366,6 +365,7 @@ const schema = a
   .authorization((allow) => [
     allow.authenticated(), // All authenticated users can access the API
     allow.resource(postConfirmation), // Post-confirmation trigger for Cognito
+    allow.group("GLOBAL_ADMIN"), // Global admins can access all resources
     // allow.resource(getUserAccessibleOrgs),
     // allow.resource(listOrgSensors),
     // allow.resource(getParameterValuesBySensor).to(['query']), // Allow all users to query parameter values

@@ -6,7 +6,10 @@ import {
   MdMap,
   MdOutlineRocketLaunch,
   MdSensors,
-  MdBusiness
+  MdBusiness,
+  MdAdminPanelSettings,
+  MdPeople,
+  MdSettings
 } from "react-icons/md";
 
 // Store the base URL as a string
@@ -61,5 +64,44 @@ export const appNavs = [
     icon: <Icon as={MdBusiness} />,
     title: "Organization",
     to: "/organization",
+  },
+  {
+    eventKey: "admin",
+    icon: <Icon as={MdAdminPanelSettings} />,
+    title: "Admin",
+    to: "/admin",
+    isAdmin: true,
+    children: [
+      {
+        eventKey: "admin-orgs",
+        title: "Organizations",
+        to: "/admin/organizations",
+        isAdmin: true,
+      },
+      {
+        eventKey: "admin-deployments",
+        title: "Deployments",
+        to: "/admin/deployments",
+        isAdmin: true,
+      },
+      {
+        eventKey: "admin-sensors",
+        title: "Sensors",
+        to: "/admin/sensors",
+        isAdmin: true,
+      },
+      {
+        eventKey: "admin-users",
+        title: "Users",
+        to: "/admin/users",
+        isAdmin: true,
+      },
+      {
+        eventKey: "admin-settings",
+        title: "Settings",
+        to: "/admin/settings",
+        isAdmin: true,
+      }
+    ]
   },
 ];

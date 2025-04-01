@@ -9,25 +9,37 @@ export interface NavItemData {
   icon?: any;
   to?: any;
   target?: string;
+  isAdmin?: boolean;
   children?: NavItemData[];
 }
 
 export interface SidebarNavProps {
   navs?: NavItemData[];
+  showAdminRoute?: boolean;
 }
 
 const SideBarNav = (props: SidebarNavProps) => {
-  const { navs } = props;
+  const { navs, showAdminRoute = false } = props;
 
   let activeClassName = "active";
+
+  // Filter out admin routes if showAdminRoute is false
+  const filteredNavs = navs?.filter(item => {
+    return showAdminRoute || !item.isAdmin;
+  });
 
   return (
     <div className="sidebar-nav">
       <ul>
-        {navs?.map((item) => {
+        {filteredNavs?.map((item) => {
           const { children, ...rest } = item;
 
-          if (children) {
+          // Filter children if they exist
+          const filteredChildren = children?.filter(child => {
+            return showAdminRoute || !child.isAdmin;
+          });
+
+          if (children && filteredChildren && filteredChildren.length > 0) {
             return (
               <li key={item.eventKey}>
                 <NavLink
@@ -40,7 +52,7 @@ const SideBarNav = (props: SidebarNavProps) => {
                   {item.title}
                 </NavLink>
                 <ul>
-                  {children.map((child) => {
+                  {filteredChildren.map((child) => {
                     return (
                       <li key={child.eventKey}>
                         <NavLink

@@ -19,6 +19,10 @@ import SensorView from "./pages/sensors/SensorView";
 import ProfileCompletion from "./pages/profile-completion";
 import NoMatch from "./components/feedback/NoMatch";
 
+// import AdminDashboard from "./pages/admin"; // Create this component
+// import AdminUsers from "./pages/admin/users"; // Create this component
+// import AdminSettings from "./pages/admin/settings"; // Create this component
+
 Amplify.configure(awsExports);
 
 const App = () => (
@@ -33,6 +37,12 @@ const App = () => (
             <Route path="sensors" element={<Sensors />} />
             <Route path="sensors/:sensorId" element={<SensorView />} />
             <Route path="account" element={<Profile user={user} />} />
+            
+            {/* Admin Routes */}
+            {/* <Route path="admin" element={<AdminDashboard />} />
+            <Route path="admin/users" element={<AdminUsers />} />
+            <Route path="admin/settings" element={<AdminSettings />} /> */}
+            
             <Route path="*" element={<NoMatch />} />
           </Route>
         </Routes>

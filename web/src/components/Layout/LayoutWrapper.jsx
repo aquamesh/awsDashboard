@@ -14,8 +14,10 @@ const LayoutWrapper = ({ signOut, user }) => {
   const navigate = useNavigate();
   const isProfileCompletionRoute = location.pathname === "/profile-completion";
   const [isCheckingProfile, setIsCheckingProfile] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  // console.log("LayoutWrapper rendering with user:", user);
+  // Check if current route is an admin route
+  const isAdminRoute = location.pathname.startsWith("/admin");
 
   useEffect(() => {
     // Skip check if already on profile completion page
@@ -25,39 +27,41 @@ const LayoutWrapper = ({ signOut, user }) => {
     }
 
     const checkProfileStatus = async () => {
-      // console.log("Checking profile for user:", user);
-
       if (!user || !user.userId) {
-        // console.log("No valid user data, redirecting to profile completion");
         navigate("/profile-completion", { replace: true });
         return;
       }
 
       try {
-        // console.log("Fetching user profile data for ID:", user.userId);
         const userData = await getUserById(user.userId);
-        // console.log("User profile data received:", userData);
-
+        
         // Check if profile is complete
         const isComplete = userData?.userSetupStage === UserSetupStage.COMPLETE;
-        console.log("Is profile complete?", isComplete);
+        
+        // Check if user is admin
+        const userIsAdmin = userData?.globalAdmin === true; // Adjust based on your user data structure
+        setIsAdmin(userIsAdmin);
+
+        // Redirect to dashboard if trying to access admin route without permissions
+        if (isAdminRoute && !userIsAdmin) {
+          console.log("Unauthorized access to admin route, redirecting to dashboard");
+          navigate("/", { replace: true });
+          return;
+        }
 
         if (!isComplete) {
-          // console.log("Profile is incomplete, redirecting to profile completion");
           navigate("/profile-completion", { replace: true });
         } else {
-          // console.log("Profile is complete, allowing access");
           setIsCheckingProfile(false);
         }
       } catch (error) {
         console.error("Error checking profile:", error);
-        console.log("Error occurred, redirecting to profile completion");
         navigate("/profile-completion", { replace: true });
       }
     };
 
     checkProfileStatus();
-  }, [user, isProfileCompletionRoute, navigate]);
+  }, [user, isProfileCompletionRoute, isAdminRoute, navigate]);
 
   // Render layout with conditional content
   return (
@@ -66,6 +70,7 @@ const LayoutWrapper = ({ signOut, user }) => {
       hideHeader={isProfileCompletionRoute}
       hideFooter={isProfileCompletionRoute}
       hideSideBar={isProfileCompletionRoute}
+      isAdmin={isAdmin}
     >
       {/* Show loading state while checking and not on completion page */}
       {!isProfileCompletionRoute && isCheckingProfile && (

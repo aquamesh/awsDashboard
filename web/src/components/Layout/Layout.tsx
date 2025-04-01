@@ -13,19 +13,20 @@ export interface LayoutProps {
   hideHeader?: boolean;
   hideFooter?: boolean;
   hideSideBar?: boolean;
+  isAdmin?: boolean;
 }
 
-const Layout = ({ signOut, hideHeader, hideFooter, hideSideBar }: LayoutProps) => {
+const Layout = ({ signOut, hideHeader, hideFooter, hideSideBar, isAdmin = false }: LayoutProps) => {
   // Create className for page container based on booleans
   const pageContainerClassName = `page-container ${hideSideBar ? 'no-sidebar' : ''} ${hideHeader ? 'no-header' : ''}`;
 
   return (
     <div className="layout-container">
       {baseConfig.header && !hideHeader && signOut && <Header signOut={signOut} />}
-      {!hideSideBar && <SideBar />}
+      {!hideSideBar && <SideBar showAdminRoute={isAdmin} />}
 
       <div className={pageContainerClassName}>
-        <Outlet context={{ signOut }} />
+        <Outlet context={{ signOut, isAdmin }} />
       </div>
       {baseConfig.footer && !hideFooter && <Footer hideSideBar={hideSideBar} />}
     </div>

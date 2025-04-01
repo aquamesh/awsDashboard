@@ -23,6 +23,7 @@ export const userAccountSelectionSet = [
 
   'userSetupStage',
   'settings.*',
+  'globalAdmin',
 
   // Metadata fields
   'lastLogin',
