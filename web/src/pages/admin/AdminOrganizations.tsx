@@ -1,10 +1,11 @@
 // src/pages/admin/AdminOrganizations.tsx 
 import React, { useEffect, useState } from "react";
-import { 
+import { useNavigate } from "react-router-dom";
+import {
     Button,
     Card,
     Flex,
-    Heading, 
+    Heading,
     Placeholder,
     Table,
     TableBody,
@@ -12,11 +13,11 @@ import {
     TableHead,
     TableRow,
     Text,
-    View 
+    View
 } from "@aws-amplify/ui-react";
 import { MdAdd } from "react-icons/md";
 
-import { 
+import {
     getAllOrganizationsBasic,
     getOrganizationBasicById
 } from "../../api/models/organizationApi";
@@ -55,6 +56,8 @@ const formatOrgSize = (size: Nullable<number>) => {
 };
 
 const AdminOrganizations = () => {
+    const navigate = useNavigate();
+
     // States
     const [organizations, setOrganizations] = useState<Organization[]>([]);
     const [loading, setLoading] = useState(true);
@@ -90,8 +93,7 @@ const AdminOrganizations = () => {
     };
 
     const handleCreateOrganization = () => {
-        console.log("Create organization clicked");
-        // This would normally open a modal or navigate to a creation page
+        navigate("/admin/organizations/create");
     };
 
     return (
