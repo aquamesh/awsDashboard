@@ -14,7 +14,7 @@ const baseUrl = import.meta.env.BASE_URL;
 
 export const baseConfig = {
   titleSuffix: "",
-  search: true,
+  search: false,
   header: true,
   headerText: "AquaView",
   footer: true,

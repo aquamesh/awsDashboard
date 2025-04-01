@@ -1,9 +1,16 @@
+/* src/components/Footer/Footer.css */
 .footer {
     padding: 30px;
     padding-left: 290px;
     text-align: left;
     background-color: #f8f9fa;
     border-top: 1px solid #e9ecef;
+    transition: padding 0.5s;
+}
+
+/* When sidebar is hidden */
+.footer.no-sidebar {
+    padding: 20px;
 }
 
 .footer a {

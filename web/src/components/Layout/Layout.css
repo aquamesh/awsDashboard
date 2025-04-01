@@ -3,7 +3,6 @@
     background-color: var(--amplify-colors-background-secondary);
 }
 
-
 .page-container {
     padding: 20px;
     padding-left: 280px;
@@ -12,16 +11,29 @@
     overflow-x: hidden;
 }
 
+/* Add these new classes for conditional styling */
+.page-container.no-sidebar {
+    padding-left: 20px; /* Reduce left padding when sidebar is hidden */
+}
+
+.page-container.no-header {
+    padding-top: 20px; /* Reduce top padding when header is hidden */
+}
+
+/* Combine classes for both conditions */
+.page-container.no-sidebar.no-header {
+    /* Any special styling for when both header and sidebar are hidden */
+    padding: 0; /* Remove all padding */
+}
+
 @media (max-width: 1024px) {
     .page-container {
-        padding: 30px;
+        padding: 20px;
         padding-left: 20px;
-        padding-top: 50px;
+        padding-top: 30px;
         transition: padding 0.5s;
     }
 }
-
-
 
 .card-title {
     font-weight: 600;

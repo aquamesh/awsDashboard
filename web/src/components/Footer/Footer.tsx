@@ -1,13 +1,14 @@
+// src/components/Footer/Footer.tsx
 import React from "react";
 import "./Footer.css";
-import { 
-  Icon, 
-  Flex, 
-  Heading, 
-  Text, 
-  Link, 
-  Divider, 
-  View 
+import {
+  Icon,
+  Flex,
+  Heading,
+  Text,
+  Link,
+  Divider,
+  View
 } from "@aws-amplify/ui-react";
 
 import {
@@ -19,15 +20,24 @@ import {
   MdEmail
 } from "react-icons/md";
 
-const Footer = () => {
+// Add props interface with hideSideBar
+interface FooterProps {
+  hideSideBar?: boolean;
+}
+
+const Footer = ({ hideSideBar }: FooterProps) => {
+  // Create className based on the boolean value
+  const footerClassName = `footer ${hideSideBar ? 'no-sidebar' : ''}`;
+
   return (
-    <div className="footer">
-      <Flex 
+    <div className={footerClassName}>
+      <Flex
         direction={{ base: 'column', medium: 'row' }}
         justifyContent="space-between"
-        gap="2rem"
+        // gap="2rem"
         wrap="wrap"
       >
+        {/* Rest of the footer content remains the same */}
         <View flex="1" minWidth="200px">
           <Heading level={4}>AquaMesh</Heading>
           <Text marginTop="0.5rem">Empowering marine monitoring through advanced IoT solutions</Text>
@@ -35,7 +45,8 @@ const Footer = () => {
             © AquaMesh {new Date().getFullYear()}
           </Text>
         </View>
-        
+
+        {/* ... Rest of the footer content ... */}
         <View flex="1" minWidth="200px">
           <Heading level={4}>Resources</Heading>
           <Flex direction="column" marginTop="0.5rem" gap="0.5rem">
@@ -59,7 +70,7 @@ const Footer = () => {
             </Link>
           </Flex>
         </View>
-        
+
         <View flex="1" minWidth="200px">
           <Heading level={4}>Company</Heading>
           <Flex direction="column" marginTop="0.5rem" gap="0.5rem">
@@ -83,7 +94,7 @@ const Footer = () => {
             </Link>
           </Flex>
         </View>
-        
+
         <View flex="1" minWidth="200px">
           <Heading level={4}>Connect</Heading>
           <Flex direction="row" marginTop="1rem" gap="1rem">
@@ -112,7 +123,7 @@ const Footer = () => {
             </Link>
           </View>
         </View>
-        
+
         <Divider orientation="horizontal" width="100%" marginTop="1rem" />
         <Flex width="100%" justifyContent="space-between" fontSize="0.8rem" color="rgba(0, 0, 0, 0.6)">
           <Text>Privacy Policy</Text>

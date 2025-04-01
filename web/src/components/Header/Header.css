@@ -57,21 +57,6 @@
     text-transform: uppercase;
 }
 
-.github-link {
-    margin-top: 10px;
-    margin-right: 10px;
-    width: 34px;
-    height: 34px;
-}
-
-.github-link .amplify-link {
-    padding: 16px 8px;
-    width: 34px;
-    height: 34px;
-    font-size: 24px;
-
-}
-
 .header-search-bar {
     padding: 7px 15px;
 }

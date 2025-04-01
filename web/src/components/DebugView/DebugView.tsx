@@ -97,7 +97,7 @@ const DebugView: React.FC<DebugViewProps> = ({
                 height: 'auto',
                 resize: 'vertical',
                 overflow: 'auto',
-                minHeight: '100px',
+                minHeight: '80px',
                 maxHeight: '1080px',
                 border: '1px solid rgba(0, 0, 0, 0.1)',
               }}

@@ -20,6 +20,8 @@ const ModularDashboard = () => {
     // Load tiles data
     useEffect(() => {
         const loadDashboard = async () => {
+            console.log("Loading dashboard tiles...");
+            // Simulate an API call to fetch dashboard tiles
             setLoading(true);
             // TODO: Fetch data from API
             setTiles(dashboardTiles);

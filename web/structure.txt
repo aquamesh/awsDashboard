@@ -7,6 +7,7 @@
 │   └── settings.json
 ├── README.md
 ├── amplify
+│   ├── .DS_Store
 │   ├── auth
 │   │   ├── post-confirmation
 │   │   │   ├── handler.ts
@@ -14,11 +15,9 @@
 │   │   └── resource.ts
 │   ├── backend.ts
 │   ├── data
+│   │   ├── custom-authorizer.ts
 │   │   └── resource.ts
 │   ├── functions
-│   │   ├── create-user-on-signup
-│   │   │   ├── handler.ts
-│   │   │   └── resource.ts
 │   │   ├── get-parameter-values-by-sensor
 │   │   │   ├── handler.ts
 │   │   │   └── resource.ts
@@ -61,16 +60,21 @@
 │   ├── App.css
 │   ├── App.jsx
 │   ├── api
+│   │   ├── .DS_Store
 │   │   ├── client.ts
-│   │   ├── hooks
-│   │   │   └── useUser.ts
 │   │   ├── models
 │   │   │   ├── index.ts
+│   │   │   ├── jointApi.ts
+│   │   │   ├── organizationApi.ts
+│   │   │   ├── sensorApi.ts
 │   │   │   └── userApi.ts
 │   │   └── utils
+│   │       └── getSelectionSetForModel.ts
 │   ├── components
 │   │   ├── Charts
 │   │   │   └── BarChart.tsx
+│   │   ├── DebugView
+│   │   │   └── DebugView.tsx
 │   │   ├── Footer
 │   │   │   ├── Footer.css
 │   │   │   ├── Footer.tsx
@@ -108,7 +112,6 @@
 │   │   ├── queries.js
 │   │   ├── schema.json
 │   │   └── subscriptions.js
-│   ├── index.css
 │   ├── logo.svg
 │   ├── main.jsx
 │   ├── pages
@@ -121,6 +124,15 @@
 │   │   ├── deployments
 │   │   │   ├── Deployments.css
 │   │   │   ├── Deployments.tsx
+│   │   │   └── index.tsx
+│   │   ├── deprecated
+│   │   │   ├── BasicTable.tsx
+│   │   │   ├── Tables.tsx
+│   │   │   ├── UsersTable
+│   │   │   │   ├── UserTable.css
+│   │   │   │   ├── UsersTable.tsx
+│   │   │   │   └── index.tsx
+│   │   │   ├── UsersTablePage.tsx
 │   │   │   └── index.tsx
 │   │   ├── forms
 │   │   │   ├── BasicForm.tsx
@@ -138,22 +150,13 @@
 │   │   │   ├── ProfileInformation.tsx
 │   │   │   ├── ProfileSettings.tsx
 │   │   │   └── index.tsx
-│   │   ├── sensors
-│   │   │   ├── SensorView
-│   │   │   │   └── index.tsx
-│   │   │   ├── SensorView.css
-│   │   │   ├── SensorView.tsx
-│   │   │   ├── Sensors.css
-│   │   │   ├── Sensors.tsx
-│   │   │   └── index.tsx
-│   │   └── tables
-│   │       ├── BasicTable.tsx
-│   │       ├── Tables.tsx
-│   │       ├── UsersTable
-│   │       │   ├── UserTable.css
-│   │       │   ├── UsersTable.tsx
+│   │   └── sensors
+│   │       ├── SensorView
 │   │       │   └── index.tsx
-│   │       ├── UsersTablePage.tsx
+│   │       ├── SensorView.css
+│   │       ├── SensorView.tsx
+│   │       ├── Sensors.css
+│   │       ├── Sensors.tsx
 │   │       └── index.tsx
 │   └── theme.tsx
 ├── structure.txt
@@ -161,4 +164,4 @@
 ├── vite-env.d.ts
 └── vite.config.js
 
-40 directories, 122 files
+39 directories, 126 files

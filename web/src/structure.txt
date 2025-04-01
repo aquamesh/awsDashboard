@@ -1,0 +1,114 @@
+.
+├── App.css
+├── App.jsx
+├── api
+│   ├── .DS_Store
+│   ├── client.ts
+│   ├── models
+│   │   ├── index.ts
+│   │   ├── jointApi.ts
+│   │   ├── organizationApi.ts
+│   │   ├── sensorApi.ts
+│   │   └── userApi.ts
+│   └── utils
+│       └── getSelectionSetForModel.ts
+├── components
+│   ├── Charts
+│   │   └── BarChart.tsx
+│   ├── DebugView
+│   │   └── DebugView.tsx
+│   ├── Feedback
+│   │   └── NoMatch.tsx
+│   ├── Footer
+│   │   ├── Footer.css
+│   │   ├── Footer.tsx
+│   │   └── index.tsx
+│   ├── Header
+│   │   ├── Header.css
+│   │   ├── Header.tsx
+│   │   ├── HeaderNav.tsx
+│   │   ├── HeaderSearchBar.tsx
+│   │   └── index.tsx
+│   ├── Layout
+│   │   ├── Layout.css
+│   │   ├── Layout.tsx
+│   │   ├── LayoutWrapper.jsx
+│   │   ├── RequireProfileComplete.jsx
+│   │   └── index.tsx
+│   ├── Logo
+│   │   ├── Logo.tsx
+│   │   └── index.tsx
+│   ├── Map
+│   │   ├── Map.css
+│   │   ├── Map.jsx
+│   │   ├── SensorCard.css
+│   │   └── SensorCard.jsx
+│   ├── ModularEditableGrid
+│   │   ├── ModularEditableGrid.css
+│   │   └── ModularEditableGrid.tsx
+│   └── SideBar
+│       ├── SideBar.css
+│       ├── SideBar.tsx
+│       ├── SidebarNav.tsx
+│       ├── SidebarNavToggle.tsx
+│       └── index.tsx
+├── config.tsx
+├── graphql
+│   ├── mutations.js
+│   ├── queries.js
+│   ├── schema.json
+│   └── subscriptions.js
+├── logo.svg
+├── main.jsx
+├── pages
+│   ├── dashboard
+│   │   ├── ModularDashboard.css
+│   │   ├── ModularDashboard.tsx
+│   │   ├── TileComponents.tsx
+│   │   ├── dashboardData.tsx
+│   │   └── index.tsx
+│   ├── deployments
+│   │   ├── Deployments.css
+│   │   ├── Deployments.tsx
+│   │   └── index.tsx
+│   ├── deprecated
+│   │   ├── BasicTable.tsx
+│   │   ├── Tables.tsx
+│   │   ├── UsersTable
+│   │   │   ├── UserTable.css
+│   │   │   ├── UsersTable.tsx
+│   │   │   └── index.tsx
+│   │   ├── UsersTablePage.tsx
+│   │   └── index.tsx
+│   ├── forms
+│   │   ├── BasicForm.tsx
+│   │   ├── EditForm
+│   │   │   ├── EditForm.tsx
+│   │   │   ├── FormActions.tsx
+│   │   │   ├── FormFields.tsx
+│   │   │   └── index.tsx
+│   │   ├── Forms.tsx
+│   │   └── index.tsx
+│   ├── profile
+│   │   ├── Profile.css
+│   │   ├── Profile.tsx
+│   │   ├── ProfileHeader.tsx
+│   │   ├── ProfileInformation.tsx
+│   │   ├── ProfileSettings.tsx
+│   │   └── index.tsx
+│   ├── profile-completetion
+│   │   ├── ProfileCompletion.css
+│   │   ├── ProfileCompletion.tsx
+│   │   └── index.tsx
+│   └── sensors
+│       ├── SensorView
+│       │   └── index.tsx
+│       ├── SensorView.css
+│       ├── SensorView.tsx
+│       ├── Sensors.css
+│       ├── Sensors.tsx
+│       └── index.tsx
+├── structure.txt
+└── theme.tsx
+
+27 directories, 85 files

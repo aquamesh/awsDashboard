@@ -9,19 +9,25 @@ import "./Layout.css";
 
 export interface LayoutProps {
   children?: React.ReactNode;
-  signOut?: () => void; // Define proper type for signOut, make it optional with ?
+  signOut?: () => void;
+  hideHeader?: boolean;
+  hideFooter?: boolean;
+  hideSideBar?: boolean;
 }
 
-const Layout = ({ signOut }: LayoutProps) => {
+const Layout = ({ signOut, hideHeader, hideFooter, hideSideBar }: LayoutProps) => {
+  // Create className for page container based on booleans
+  const pageContainerClassName = `page-container ${hideSideBar ? 'no-sidebar' : ''} ${hideHeader ? 'no-header' : ''}`;
+
   return (
     <div className="layout-container">
-      {baseConfig.header ? (signOut && <Header signOut={signOut} />) : <></>}
-      <SideBar />
+      {baseConfig.header && !hideHeader && signOut && <Header signOut={signOut} />}
+      {!hideSideBar && <SideBar />}
 
-      <div className="page-container">
+      <div className={pageContainerClassName}>
         <Outlet context={{ signOut }} />
       </div>
-      {baseConfig.footer ? <Footer /> : <></>}
+      {baseConfig.footer && !hideFooter && <Footer hideSideBar={hideSideBar} />}
     </div>
   );
 };

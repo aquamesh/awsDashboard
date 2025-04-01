@@ -1,0 +1,183 @@
+/* src/pages/profile-completion/ProfileCompletion.css */
+.profile-completion-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+    background-color: #f8f9fa;
+}
+
+.profile-completion-card {
+    width: 100%;
+    max-width: 650px;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    background-color: white;
+}
+
+/* Header styles */
+.profile-completion-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Step indicator styles */
+.profile-completion-step-indicator {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+    position: relative;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Line connecting steps */
+.profile-completion-step-indicator::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 40px;
+    right: 40px;
+    height: 2px;
+    background-color: var(--amplify-colors-neutral-20);
+    z-index: 0;
+}
+
+.profile-completion-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.profile-completion-step-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.profile-completion-step-active {
+    background-color: var(--amplify-colors-brand-primary, #0972d3);
+    color: white;
+    box-shadow: 0 0 0 5px rgba(9, 114, 211, 0.2);
+}
+
+.profile-completion-step-completed {
+    background-color: var(--amplify-colors-green-60, #2eb67d);
+    color: white;
+}
+
+.profile-completion-step-pending {
+    background-color: var(--amplify-colors-background-secondary, #f5f5f5);
+    color: var(--amplify-colors-neutral-80, #5f6b7a);
+    border: 1px solid var(--amplify-colors-neutral-40, #d1d5db);
+}
+
+/* Content wrapper with animations */
+.profile-completion-content-wrapper {
+    /* min-height: 300px; */
+    position: relative;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    overflow: hidden;
+}
+
+.profile-completion-content-wrapper.forward {
+    animation: slideInFromRight 0.4s forwards;
+}
+
+.profile-completion-content-wrapper.backward {
+    animation: slideInFromLeft 0.4s forwards;
+}
+
+@keyframes slideInFromRight {
+    0% {
+        transform: translateX(50px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Step content styles */
+.profile-completion-step-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Welcome image */
+.profile-completion-welcome-image {
+    max-width: 200px;
+    margin: 1rem 0;
+    opacity: 0.9;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .profile-completion-container {
+        padding: 1rem;
+    }
+
+    .profile-completion-card {
+        padding: 1.5rem;
+    }
+
+    .profile-completion-step-indicator {
+        margin-bottom: 2rem;
+    }
+
+    .profile-completion-step-indicator::before {
+        left: 20px;
+        right: 20px;
+    }
+
+    .profile-completion-step-circle {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+}
+
+/* Hide steps on very small screens */
+@media (max-width: 500px) {
+    .profile-completion-step span {
+        display: none;
+    }
+
+    .profile-completion-step:not(.profile-completion-step-active) {
+        display: none;
+    }
+
+    .profile-completion-step-indicator::before {
+        display: none;
+    }
+}

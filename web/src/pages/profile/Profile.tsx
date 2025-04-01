@@ -13,7 +13,9 @@ import {
   UserAccount,
   getUserById,
   getUserSettings,
-  getAllUsers
+  getAllUsers,
+  updateUserProfile,
+  updateUserSettings
 } from "../../api/models/userApi";
 import "./Profile.css";
 
@@ -96,6 +98,27 @@ const Profile = ({ user }: ProfileProps) => {
       label: "Fetch All Users",
       action: handleFetchAllUsers,
       resultLabel: "All Users"
+    },
+    {
+      label: "Set userSetupStage to 'INITIAL'",
+      action: async () => {
+        try {
+          if (!user || !user.userId) {
+            throw new Error("User not authenticated");
+          }
+          
+          console.log("Setting userSetupStage to 'INITIAL'");
+          const dataDebug = await updateUserProfile(user.userId, {
+            userSetupStage: "INITIAL"
+          });
+          console.log("userSetupStage set to 'INITIAL'");
+          return dataDebug?.userSetupStage === "INITIAL" ? "Success" : "Failure";
+        } catch (err) {
+          console.error("Failed to set userSetupStage:", err);
+          throw new Error("Failed to update user setup stage");
+        }
+      },
+      resultLabel: "User Setup Stage"
     }
     // TODO: Add more debug actions here if needed
   ];
@@ -115,8 +138,7 @@ const Profile = ({ user }: ProfileProps) => {
                 : "User"}
               email={userProfile?.email || ""}
               profilePicture={null}
-              /* For now lets pass the userId as the organization name */
-              organization={userProfile?.id || "N/A"}
+              organization={userProfile?.jobTitle || "User"}
             />
           </div>
         </div>
