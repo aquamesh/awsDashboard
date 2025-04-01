@@ -2,9 +2,11 @@
 import { defineBackend } from "@aws-amplify/backend";
 import { Policy, PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { CfnMap } from "aws-cdk-lib/aws-location";
+
 import { auth } from "./auth/resource.js";
 import { postConfirmation } from "./auth/post-confirmation/resource.js";
 import { data } from "./data/resource.js";
+import { storage } from "./storage/resource.js";
 
 // import { CfnTopicRule } from "aws-cdk-lib/aws-iot";
 // import { queryIotCoreDevices } from "./functions/query-iotcore-devices/resource.js";
@@ -15,6 +17,7 @@ const backend = defineBackend({
   auth, // This is the authentication resource for Cognito
   postConfirmation, // This is the post-confirmation trigger for Cognito
   data, // This is the data resource for Amplify DataStore
+  storage,
 
   // DEBUG: Remove this line to enable the iot backend
   // queryIotCoreDevices,
